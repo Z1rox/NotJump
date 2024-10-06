@@ -1,3 +1,4 @@
+
 let board, context;
 let boardWidth = 360;
 let boardHeight = 576;
@@ -16,28 +17,25 @@ let doodler = {
     height: doodlerHeight
 }
 
-// Physics
 let velocityX = 0;
 let velocityY = 0;
 let initialVelocityY = -12;
 let gravity = 0.4;
-let maxHeight = boardHeight / 2;  // ������, ������� � ������� ������ ����� ���������
+let maxHeight = boardHeight / 2;
 
-// Platforms
 let platformArray = [];
 let platformWidth = 60;
 let platformHeight = 18;
 let platformImg;
 
 let score = 0;
-let maxDistance = doodlerY; // ���������� ��� ������������ ������������ ������
+let maxDistance = doodlerY;
 let gameOver = false;
-let isJumping = false; // ���� ��� ������������ ��������� ������
+let isJumping = false;
 
-let cameraSpeed = 0.2; // �������� �������� �������� ������
+let cameraSpeed = 0.2;
 
-// High Score
-let highScore = localStorage.getItem("highScore") ? parseInt(localStorage.getItem("highScore")) : 0;  // ��������� ������
+let highScore = localStorage.getItem("highScore") ? parseInt(localStorage.getItem("highScore")) : 0;
 
 window.onload = function () {
     board = document.getElementById("board");
@@ -45,7 +43,6 @@ window.onload = function () {
     board.width = boardWidth;
     context = board.getContext("2d");
 
-    // �������� �����������
     doodlerRightImg = new Image();
     doodlerRightImg.src = "./player.png";
     doodler.img = doodlerRightImg;
@@ -65,20 +62,17 @@ window.onload = function () {
     placePlatforms();
     requestAnimationFrame(update);
 
-    // ������� ���������� (��� ��)
     document.addEventListener("keydown", moveDoodler);
 
-    // ����� ���������� ��� ��������� ���������
     board.addEventListener('touchstart', handleTouch);
 
     function handleTouch(e) {
         let touchX = e.changedTouches[0].clientX;
 
-        // ����������, �� ����� ����� ������ ���� ������
         if (touchX < boardWidth / 2) {
-            moveLeft();  // ������� �� ����� ����� ������ � �������� �����
+            moveLeft();
         } else {
-            moveRight(); // ������� �� ������ ����� ������ � �������� ������
+            moveRight();
         }
     }
 }
@@ -89,50 +83,42 @@ function update() {
 
     context.clearRect(0, 0, board.width, board.height);
 
-    // �������� ��������� �� �����������
     doodler.x += velocityX;
     if (doodler.x > boardWidth) doodler.x = 0;
     else if (doodler.x + doodler.width < 0) doodler.x = boardWidth;
 
-    // ����������
     velocityY += gravity;
     doodler.y += velocityY;
 
-    // ����������� �������� �����: �������� �� ����������� ���� ������� ������� ������
     if (doodler.y < 0) {
-        doodler.y = 0;  // �������� �� ����� ��������� ���� ������� ������� ������
+        doodler.y = 0;
     }
 
-    // ���� �������� ������ �� ������� ������ ����� � ����� ����
     if (doodler.y > boardHeight) {
         gameOver = true;
-        checkHighScore();  // ��������� � ��������� ������
+        checkHighScore();
     }
 
-    // ������� �������� ������ � ��������
     if (doodler.y < maxHeight) {
-        let cameraShift = (maxHeight - doodler.y) * cameraSpeed;  // ������� �������� ������
-        doodler.y += cameraShift;  // ������� �������� ���������
+        let cameraShift = (maxHeight - doodler.y) * cameraSpeed;
+        doodler.y += cameraShift;
 
         for (let i = 0; i < platformArray.length; i++) {
-            platformArray[i].y += cameraShift;  // ������� �������� ��������
+            platformArray[i].y += cameraShift;
         }
 
         score += Math.floor(cameraShift);
     }
 
-    // �������� �� ������������ � ���������� � ������
     for (let i = 0; i < platformArray.length; i++) {
         let platform = platformArray[i];
 
-        // �������� �� ������������ � ����������, ������ ���� �������� ������ (velocityY >= 0) � �� ��������� � ������
         if (detectCollision(doodler, platform) && velocityY >= 0 && !isJumping) {
-            velocityY = initialVelocityY;  // �������� ��������� �� ���������
-            soundEffect.play();  // ���� ������
-            isJumping = true; // �������� ��������� � ������
+            velocityY = initialVelocityY;
+            soundEffect.play();
+            isJumping = true;
         }
 
-        // ������� ���������, ������� ������ �� ������� ������
         if (platform.y >= boardHeight) {
             platformArray.shift();
             newPlatform();
@@ -141,26 +127,22 @@ function update() {
         context.drawImage(platform.img, platform.x, platform.y, platform.width, platform.height);
     }
 
-    // ���������� ���� ������, ����� �������� �������� ����������� (�.�. �������� �������)
     if (velocityY > 0) {
         isJumping = false;
     }
 
-    // ������ ���������
     context.drawImage(doodler.img, doodler.x, doodler.y, doodler.width, doodler.height);
 
-    // ���������� �����
     updateScore();
     drawUsername();
 
     if (gameOver) {
         context.fillStyle = "white";
-        context.font = "16px sans-serif";
+        context.font = "25px monospace";
         context.fillText("Game Over: Press 'Space' to Restart", boardWidth / 7, boardHeight * 7 / 8);
     }
 }
 
-// �������� ��������� ����� � ������ (��� �� � �������)
 function moveDoodler(e) {
     if (e.code == "ArrowRight" || e.code == "KeyD") {
         moveRight();
@@ -185,9 +167,9 @@ function stopDoodler() {
     velocityX = 0;
 }
 function drawUsername() {
-    context.fillStyle = "white"; // Цвет текста
-    context.font = "22px sans-serif"; // Шрифт текста
-    context.fillText(` ${username}`, 280, 25); // Позиция текста (вверху канваса)
+    context.fillStyle = "white";
+    context.font = "16px sans-serif";
+    context.fillText(` ${username}`, 250, 25);
 }
 function restartGame() {
     doodler = {
@@ -201,12 +183,11 @@ function restartGame() {
     velocityX = 0;
     velocityY = initialVelocityY;
     score = 0;
-    maxDistance = doodlerY; // ����� ������������ ������
+    maxDistance = doodlerY;
     gameOver = false;
     placePlatforms();
 }
 
-// ��������� �������� � ������ �������
 
 function placePlatforms() {
     platformArray = [];
@@ -251,26 +232,38 @@ function detectCollision(a, b) {
         a.y + a.height > b.y;
 }
 
-// ���������� �����: ��������� ���� �� ���������� ���������
 function updateScore() {
-    // ���������, ���� �������� ������ ����� ������������ ������
     if (doodler.y < maxDistance) {
-        let distanceTraveled = maxDistance - doodler.y; // ��������� ���������� ���������
-        score += Math.floor(distanceTraveled); // ��������� �� ����� ����� � ��������� � �����
-        maxDistance = doodler.y; // ��������� ������������ ������
+        let distanceTraveled = maxDistance - doodler.y;
+        score += Math.floor(distanceTraveled);
+        maxDistance = doodler.y;
     }
 
-    // ���������� ������� ���� � ������
     context.fillStyle = "white";
-    context.font = "16px sans-serif";
+    context.font = "16px monospace font-weight:";
     context.fillText(`Score: ${Math.floor(score)}`, 5, 20);
-    context.fillText(`High Score: ${highScore}`, 5, 40);  // ����������� �������
+    context.fillText(`High Score: ${highScore}`, 5, 40);
 }
 
-// �������� � ���������� �������
-function checkHighScore() {
+async function checkHighScore() {
     if (score > highScore) {
         highScore = score;
-        localStorage.setItem("highScore", highScore);  // ��������� ������ � localStorage
-    }
-}
+        localStorage.setItem("highScore", highScore);
+        let data = {
+            username: ` ${username}`,
+            score: highScore,
+        };
+        try{
+            const response = await fetch('http://127.0.0.1:5000/scores', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        }
+        catch (error) {
+            console.error(error);
+        }
+        
+}}

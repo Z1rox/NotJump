@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+</head>
+<body>
+    <h1>Top Players</h1>
+    <div id="output"></div>
+
+    <script>
+        async function fetchScores() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/scores');
+                const data = await response.json();
+
+                const outputDiv = document.getElementById('output');
+                
+                data.forEach((player, index) => {
+                    outputDiv.innerHTML += `<p>${index + 1}. ${player.username}: ${player.score}</p>`;
+                });
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        window.onload = fetchScores;
+    </script>
+</body>
+</html>

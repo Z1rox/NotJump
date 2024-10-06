@@ -4,16 +4,16 @@ body {
 
 body, html {
     overflow: hidden;
-    margin: 0; /* Убираем отступы */
+    margin: 0;
 }
 
 #board {
-    background-image: url("./doodlejumpbg.png");
-    background-size: cover; /* Растягиваем фон */
+    background-image: url("./background.png");
+    background-size: cover;
 }
 
 canvas {
-    height: 100%; /* Соотношение сторон сохраняется */
+    height: 100%;
     display: block;
     margin: 0 auto;
 }
