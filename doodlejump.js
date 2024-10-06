@@ -138,7 +138,7 @@ function update() {
 
     if (gameOver) {
         context.fillStyle = "white";
-        context.font = "25px monospace";
+        context.font = "16px monospace";
         context.fillText("Game Over: Press 'Space' to Restart", boardWidth / 7, boardHeight * 7 / 8);
     }
 }
