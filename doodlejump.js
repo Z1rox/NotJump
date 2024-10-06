@@ -1,0 +1,276 @@
+let board, context;
+let boardWidth = 360;
+let boardHeight = 576;
+
+let doodlerWidth = 46;
+let doodlerHeight = 54;
+let doodlerX = boardWidth / 2 - doodlerWidth / 2;
+let doodlerY = boardHeight * 7 / 8 - doodlerHeight;
+let doodlerRightImg, doodlerLeftImg, soundEffect;
+
+let doodler = {
+    img: null,
+    x: doodlerX,
+    y: doodlerY,
+    width: doodlerWidth,
+    height: doodlerHeight
+}
+
+// Physics
+let velocityX = 0;
+let velocityY = 0;
+let initialVelocityY = -12;
+let gravity = 0.4;
+let maxHeight = boardHeight / 2;  // ������, ������� � ������� ������ ����� ���������
+
+// Platforms
+let platformArray = [];
+let platformWidth = 60;
+let platformHeight = 18;
+let platformImg;
+
+let score = 0;
+let maxDistance = doodlerY; // ���������� ��� ������������ ������������ ������
+let gameOver = false;
+let isJumping = false; // ���� ��� ������������ ��������� ������
+
+let cameraSpeed = 0.2; // �������� �������� �������� ������
+
+// High Score
+let highScore = localStorage.getItem("highScore") ? parseInt(localStorage.getItem("highScore")) : 0;  // ��������� ������
+
+window.onload = function () {
+    board = document.getElementById("board");
+    board.height = boardHeight;
+    board.width = boardWidth;
+    context = board.getContext("2d");
+
+    // �������� �����������
+    doodlerRightImg = new Image();
+    doodlerRightImg.src = "./player.png";
+    doodler.img = doodlerRightImg;
+
+    soundEffect = new Audio('BounceYoFrankie.wav');
+    doodlerRightImg.onload = function () {
+        context.drawImage(doodler.img, doodler.x, doodler.y, doodler.width, doodler.height);
+    }
+
+    doodlerLeftImg = new Image();
+    doodlerLeftImg.src = "./player.png";
+
+    platformImg = new Image();
+    platformImg.src = "./platform.png";
+
+    velocityY = initialVelocityY;
+    placePlatforms();
+    requestAnimationFrame(update);
+
+    // ������� ���������� (��� ��)
+    document.addEventListener("keydown", moveDoodler);
+
+    // ����� ���������� ��� ��������� ���������
+    board.addEventListener('touchstart', handleTouch);
+
+    function handleTouch(e) {
+        let touchX = e.changedTouches[0].clientX;
+
+        // ����������, �� ����� ����� ������ ���� ������
+        if (touchX < boardWidth / 2) {
+            moveLeft();  // ������� �� ����� ����� ������ � �������� �����
+        } else {
+            moveRight(); // ������� �� ������ ����� ������ � �������� ������
+        }
+    }
+}
+
+function update() {
+    requestAnimationFrame(update);
+    if (gameOver) return;
+
+    context.clearRect(0, 0, board.width, board.height);
+
+    // �������� ��������� �� �����������
+    doodler.x += velocityX;
+    if (doodler.x > boardWidth) doodler.x = 0;
+    else if (doodler.x + doodler.width < 0) doodler.x = boardWidth;
+
+    // ����������
+    velocityY += gravity;
+    doodler.y += velocityY;
+
+    // ����������� �������� �����: �������� �� ����������� ���� ������� ������� ������
+    if (doodler.y < 0) {
+        doodler.y = 0;  // �������� �� ����� ��������� ���� ������� ������� ������
+    }
+
+    // ���� �������� ������ �� ������� ������ ����� � ����� ����
+    if (doodler.y > boardHeight) {
+        gameOver = true;
+        checkHighScore();  // ��������� � ��������� ������
+    }
+
+    // ������� �������� ������ � ��������
+    if (doodler.y < maxHeight) {
+        let cameraShift = (maxHeight - doodler.y) * cameraSpeed;  // ������� �������� ������
+        doodler.y += cameraShift;  // ������� �������� ���������
+
+        for (let i = 0; i < platformArray.length; i++) {
+            platformArray[i].y += cameraShift;  // ������� �������� ��������
+        }
+
+        score += Math.floor(cameraShift);
+    }
+
+    // �������� �� ������������ � ���������� � ������
+    for (let i = 0; i < platformArray.length; i++) {
+        let platform = platformArray[i];
+
+        // �������� �� ������������ � ����������, ������ ���� �������� ������ (velocityY >= 0) � �� ��������� � ������
+        if (detectCollision(doodler, platform) && velocityY >= 0 && !isJumping) {
+            velocityY = initialVelocityY;  // �������� ��������� �� ���������
+            soundEffect.play();  // ���� ������
+            isJumping = true; // �������� ��������� � ������
+        }
+
+        // ������� ���������, ������� ������ �� ������� ������
+        if (platform.y >= boardHeight) {
+            platformArray.shift();
+            newPlatform();
+        }
+
+        context.drawImage(platform.img, platform.x, platform.y, platform.width, platform.height);
+    }
+
+    // ���������� ���� ������, ����� �������� �������� ����������� (�.�. �������� �������)
+    if (velocityY > 0) {
+        isJumping = false;
+    }
+
+    // ������ ���������
+    context.drawImage(doodler.img, doodler.x, doodler.y, doodler.width, doodler.height);
+
+    // ���������� �����
+    updateScore();
+    drawUsername();
+
+    if (gameOver) {
+        context.fillStyle = "white";
+        context.font = "16px sans-serif";
+        context.fillText("Game Over: Press 'Space' to Restart", boardWidth / 7, boardHeight * 7 / 8);
+    }
+}
+
+// �������� ��������� ����� � ������ (��� �� � �������)
+function moveDoodler(e) {
+    if (e.code == "ArrowRight" || e.code == "KeyD") {
+        moveRight();
+    } else if (e.code == "ArrowLeft" ||     e.code == "KeyA") {
+        moveLeft();
+    } else if (e.code == "Space" && gameOver) {
+        restartGame();
+    }
+}
+
+function moveRight() {
+    velocityX = 4;
+    doodler.img = doodlerRightImg;
+}
+
+function moveLeft() {
+    velocityX = -4;
+    doodler.img = doodlerLeftImg;
+}
+
+function stopDoodler() {
+    velocityX = 0;
+}
+function drawUsername() {
+    context.fillStyle = "white"; // Цвет текста
+    context.font = "22px sans-serif"; // Шрифт текста
+    context.fillText(` ${username}`, 280, 25); // Позиция текста (вверху канваса)
+}
+function restartGame() {
+    doodler = {
+        img: doodlerRightImg,
+        x: doodlerX,
+        y: doodlerY,
+        width: doodlerWidth,
+        height: doodlerHeight
+    };
+
+    velocityX = 0;
+    velocityY = initialVelocityY;
+    score = 0;
+    maxDistance = doodlerY; // ����� ������������ ������
+    gameOver = false;
+    placePlatforms();
+}
+
+// ��������� �������� � ������ �������
+
+function placePlatforms() {
+    platformArray = [];
+    let platform = {
+        img: platformImg,
+        x: boardWidth / 2,
+        y: boardHeight - 50,
+        width: platformWidth,
+        height: platformHeight
+    };
+    platformArray.push(platform);
+
+    for (let i = 0; i < 6; i++) {
+        let randomX = Math.floor(Math.random() * boardWidth * 3 / 4);
+        let platform = {
+            img: platformImg,
+            x: randomX,
+            y: boardHeight - 75 * i - 150,
+            width: platformWidth,
+            height: platformHeight
+        }
+        platformArray.push(platform);
+    }
+}
+
+function newPlatform() {
+    let randomX = Math.floor(Math.random() * boardWidth * 3 / 4);
+    let platform = {
+        img: platformImg,
+        x: randomX,
+        y: -platformHeight,
+        width: platformWidth,
+        height: platformHeight
+    };
+    platformArray.push(platform);
+}
+
+function detectCollision(a, b) {
+    return a.x < b.x + b.width &&
+        a.x + a.width > b.x &&
+        a.y < b.y + b.height &&
+        a.y + a.height > b.y;
+}
+
+// ���������� �����: ��������� ���� �� ���������� ���������
+function updateScore() {
+    // ���������, ���� �������� ������ ����� ������������ ������
+    if (doodler.y < maxDistance) {
+        let distanceTraveled = maxDistance - doodler.y; // ��������� ���������� ���������
+        score += Math.floor(distanceTraveled); // ��������� �� ����� ����� � ��������� � �����
+        maxDistance = doodler.y; // ��������� ������������ ������
+    }
+
+    // ���������� ������� ���� � ������
+    context.fillStyle = "white";
+    context.font = "16px sans-serif";
+    context.fillText(`Score: ${Math.floor(score)}`, 5, 20);
+    context.fillText(`High Score: ${highScore}`, 5, 40);  // ����������� �������
+}
+
+// �������� � ���������� �������
+function checkHighScore() {
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem("highScore", highScore);  // ��������� ������ � localStorage
+    }
+}

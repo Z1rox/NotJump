@@ -1,0 +1,26 @@
+body {
+    text-align: center;
+}
+
+body, html {
+    overflow: hidden;
+    margin: 0; /* Убираем отступы */
+}
+
+#board {
+    background-image: url("./doodlejumpbg.png");
+    background-size: cover; /* Растягиваем фон */
+}
+
+canvas {
+    height: 100%; /* Соотношение сторон сохраняется */
+    display: block;
+    margin: 0 auto;
+}
+
+html {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
