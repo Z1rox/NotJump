@@ -1,8 +1,8 @@
 const tg = window.Telegram.WebApp;
 tg.expand();
-tg.themeParams.secondary_bg_color("#000000");
-tg.themeParams.bg_color("#000000");
-tg.themeParams.header_bg_color("#000000");
+tg.secondary_bg_color("#000000");
+tg.bg_color("#000000");
+tg.header_bg_color("#000000");
 const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
 
@@ -14,6 +14,9 @@ function resizeCanvas() {
 window.onload = function() {
     resizeCanvas();
     telegramWebApp.isLoaded();
+    if (telegramWebApp.isLoaded()) {
+        document.getElementById('loadingScreen').style.display = 'none';
+    }
 };
 
 window.onresize = resizeCanvas;
