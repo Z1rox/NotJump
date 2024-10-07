@@ -63,6 +63,7 @@ window.onload = function () {
     requestAnimationFrame(update);
 
     document.addEventListener("keydown", moveDoodler);
+    document.addEventListener('touchend', handleTouchEnd);
 
     board.addEventListener('touchstart', handleTouch);
 
@@ -74,6 +75,9 @@ window.onload = function () {
         } else {
             moveRight();
         }
+    }
+    function handleTouchEnd(e) {
+        stopMove();
     }
 }
 
@@ -155,6 +159,10 @@ function moveDoodler(e) {
 
 function moveRight() {
     velocityX = 4;
+    doodler.img = doodlerRightImg;
+}
+function stopMove() {
+    velocityX = 0;
     doodler.img = doodlerRightImg;
 }
 
