@@ -158,7 +158,7 @@ function moveDoodler(e) {
 }
 
 function moveRight() {
-    velocityX = 4;
+    velocityX = 2;
     doodler.img = doodlerRightImg;
 }
 function stopMove() {
@@ -167,7 +167,7 @@ function stopMove() {
 }
 
 function moveLeft() {
-    velocityX = -4;
+    velocityX = -2;
     doodler.img = doodlerLeftImg;
 }
 
