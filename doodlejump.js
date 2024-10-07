@@ -145,9 +145,9 @@ function update() {
 
 function moveDoodler(e) {
     if (e.code == "ArrowRight" || e.code == "KeyD") {
-        moveRight();
+        moveRight(0);
     } else if (e.code == "ArrowLeft" ||     e.code == "KeyA") {
-        moveLeft();
+        moveLeft(0);
     } else if (e.code == "Space" && gameOver) {
         restartGame();
     }
