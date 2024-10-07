@@ -1,7 +1,8 @@
 const tg = window.Telegram.WebApp;
 tg.expand();
-tg.setBackgroundColor("#000000");
-tg.setHeadorColor("#000000");
+tg.themeParams.secondary_bg_color("#000000");
+tg.themeParams.bg_color("#000000");
+tg.themeParams.header_bg_color("#000000");
 const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
 
