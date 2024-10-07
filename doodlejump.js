@@ -20,7 +20,7 @@ let doodler = {
 let velocityX = 0;
 let velocityY = 0;
 let initialVelocityY = -12;
-let gravity = 0.4;
+let gravity = 0.3;
 let maxHeight = boardHeight / 2;
 
 let platformArray = [];
@@ -139,7 +139,7 @@ function update() {
     if (gameOver) {
         context.fillStyle = "white";
         context.font = "16px monospace";
-        context.fillText("Game Over: Press 'Space' to Restart", boardWidth / 7, boardHeight * 7 / 8);
+        context.fillText("Game Over", boardWidth / 7, boardHeight * 7 / 8);
     }
 }
 
@@ -226,12 +226,13 @@ function newPlatform() {
 }
 
 function detectCollision(a, b) {
-    return a.x < b.x + b.width &&
-        a.x + a.width > b.x &&
-        a.y < b.y + b.height &&
-        a.y + a.height > b.y;
-}
+    const leg = 10; 
 
+    return a.x < b.x + b.width &&
+           a.x + a.width > b.x &&
+           a.y + a.height > b.y &&
+           a.y + a.height - leg < b.y;
+}
 function updateScore() {
     if (doodler.y < maxDistance) {
         let distanceTraveled = maxDistance - doodler.y;

@@ -14,9 +14,6 @@ function resizeCanvas() {
 window.onload = function() {
     resizeCanvas();
     telegramWebApp.isLoaded();
-    if (telegramWebApp.isLoaded()) {
-        document.getElementById('loadingScreen').style.display = 'none';
-    }
 };
 
 window.onresize = resizeCanvas;
