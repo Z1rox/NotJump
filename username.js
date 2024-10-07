@@ -3,4 +3,4 @@ tg.expand();
 
 let username = tg.initDataUnsafe.user.username;
 console.log(tg.platform);
-tg.Field.setHeaderColor("#000000");
+tg.Field.setBackgroundColor("#000000");
