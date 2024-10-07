@@ -2,5 +2,4 @@ const tg = window.Telegram.WebApp;
 tg.expand();
 
 let username = tg.initDataUnsafe.user.username;
-console.log(tg.platform);
-tg.Field.setBackgroundColor("#000000");
+tg.setBackgroundColor("#000000");
