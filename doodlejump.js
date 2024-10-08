@@ -149,16 +149,16 @@ function update() {
 
 function moveDoodler(e) {
     if (e.code == "ArrowRight" || e.code == "KeyD") {
-        moveRight(0);
+        moveRight();
     } else if (e.code == "ArrowLeft" ||     e.code == "KeyA") {
-        moveLeft(0);
+        moveLeft();
     } else if (e.code == "Space" && gameOver) {
         restartGame();
     }
 }
 
 function moveRight() {
-    velocityX = 2;
+    velocityX = 4;
     doodler.img = doodlerRightImg;
 }
 function stopMove() {
@@ -167,7 +167,7 @@ function stopMove() {
 }
 
 function moveLeft() {
-    velocityX = -2;
+    velocityX = -4;
     doodler.img = doodlerLeftImg;
 }
 

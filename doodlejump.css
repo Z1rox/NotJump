@@ -15,9 +15,8 @@ body, html {
 }
 
 canvas {
+    height: 90%;
     display: block;
-    width: 100vw;
-    height: 90vh;
     margin: 0 auto;
 }
 
@@ -28,8 +27,7 @@ html {
     align-items: center;
 }   
 .click{
-    height: 10vh;
-    width: 100vw;
+    height: 10%;
     background-color: #000000;
     display: flex;
     justify-content: space-between;
