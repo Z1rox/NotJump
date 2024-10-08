@@ -80,9 +80,13 @@ window.onload = function () {
         stopMove();
     }
 }
-
+function gameLoop(){
+    update();
+    render();
+    requestAnimationFrame(gameLoop);
+}
 function update() {
-    requestAnimationFrame(update);
+    requestAnimationFrame(gameLoop);
     if (gameOver) return;
 
     context.clearRect(0, 0, board.width, board.height);
