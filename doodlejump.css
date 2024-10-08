@@ -16,7 +16,7 @@ body, html {
 canvas {
     height: 90%;
     display: flex;
-    margin: 0;
+    margin: 0 auto;
 }
 
 html {
@@ -37,4 +37,16 @@ html {
     text-decoration: none;
     font-family: Arial, sans-serif;
     font-size: 18px;
+}
+@media (max-width: 767px) {
+    .click {
+        width: 100%;
+    }
+}
+
+
+@media (min-width: 768px) {
+    .click {
+        max-width: 1200px;
+    }
 }
