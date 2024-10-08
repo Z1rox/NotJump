@@ -80,13 +80,9 @@ window.onload = function () {
         stopMove();
     }
 }
-function gameLoop(){
-    update();
-    render();
-    requestAnimationFrame(gameLoop);
-}
+
 function update() {
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(update);
     if (gameOver) return;
 
     context.clearRect(0, 0, board.width, board.height);
@@ -146,8 +142,8 @@ function update() {
 
     if (gameOver) {
         context.fillStyle = "white";
-        context.font = "16px monospace";
-        context.fillText("Game Over", boardWidth / 7, boardHeight * 7 / 8);
+        context.font = "16px Arial, sans-serif";
+        context.fillText("Game Over", boardWidth / 2, boardHeight / 2);
     }
 }
 

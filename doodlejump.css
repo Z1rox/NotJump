@@ -31,12 +31,17 @@ html {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+
 }
 .click a {
     color: rgb(255, 255, 255);
     text-decoration: none;
     font-family: Arial, sans-serif;
-    font-size: 18px;
+    font-size: 12px;
 }
 @media (max-width: 767px) {
     .click {
