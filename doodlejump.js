@@ -20,7 +20,7 @@ let doodler = {
 let velocityX = 0;
 let velocityY = 0;
 let initialVelocityY = -12;
-let gravity = 0.3;
+let gravity = 0.4;
 let maxHeight = boardHeight / 2;
 
 let platformArray = [];
@@ -143,7 +143,7 @@ function update() {
     if (gameOver) {
         context.fillStyle = "white";
         context.font = "16px Arial, sans-serif";
-        context.fillText("Game Over", boardWidth / 2, boardHeight / 2);
+        context.fillText("Game Over", boardWidth / 3, boardHeight / 2);
     }
 }
 
