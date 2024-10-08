@@ -1,6 +1,6 @@
-const tg = window.Telegram.WebApp;
+const tg = Telegram.WebApp;
 tg.expand();
-tg.setBackgroundColor("#000000");
+tg.setHeaderColor("#ffffff");
 const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
 
