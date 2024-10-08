@@ -14,8 +14,7 @@ body, html {
 }
 
 canvas {
-    height: 90%;
-    weight: 100%;
+    height: 100%;
     display: flex;
     margin: 0 auto;
 }
