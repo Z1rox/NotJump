@@ -13,7 +13,7 @@
     <script>
         async function fetchScores() {
             try {
-                const response = await fetch('http://127.0.0.1:5000/scores');
+                const response = await fetch('http://5.42.104.249:5000/scores');
                 const data = await response.json();
 
                 const outputDiv = document.getElementById('output');

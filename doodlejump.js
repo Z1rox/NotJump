@@ -263,7 +263,7 @@ async function checkHighScore() {
             score: highScore,
         };
         try{
-            const response = await fetch('http://127.0.0.1:5000/scores', {
+            const response = await fetch('http://5.42.104.249:5000/scores', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
