@@ -259,7 +259,7 @@ async function checkHighScore() {
         highScore = score;
         localStorage.setItem("highScore", highScore);
         let data = {
-            username: ` ${username}`,
+            username: `${username}`,
             score: highScore,
         };
         try{

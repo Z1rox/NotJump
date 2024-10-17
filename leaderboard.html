@@ -4,30 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="leaderboard.css">
+    <script defer src="leaderboard.js"></script> <!-- defer чтобы дождаться загрузки HTML -->
     <title>Leaderboard</title>
+    <style>
+        /* Добавляем красивый шрифт */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+        }
+
+        .leaderboard {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .player {
+            font-size: 18px;
+            margin: 10px 0;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .click {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0066cc;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <h1>Top Players</h1>
-    <div id="output"></div>
-
-    <script>
-        async function fetchScores() {
-            try {
-                const response = await fetch('http://5.42.104.249:5000/scores');
-                const data = await response.json();
-
-                const outputDiv = document.getElementById('output');
-                
-                data.forEach((player, index) => {
-                    outputDiv.innerHTML += `<p>${index + 1}. ${player.username}: ${player.score}</p>`;
-                });
-
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        window.onload = fetchScores;
-    </script>
+    <div class="leaderboard" id="leaderboard">
+    </div>
     <div class="click">
         <a href="index.html">Game</a>
     </div>
