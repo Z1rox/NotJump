@@ -30,13 +30,13 @@ html {
 .highscore {
     position: fixed;
     display: flex;
-    padding-top: 2%
+    padding-top: 5%
 }
 .username{
     position: fixed;
     display: flex;
     padding-top: 0%;
-    padding-left: 15%;
+    padding-right: 15%;
 }
 .score{
     height: 10%;
