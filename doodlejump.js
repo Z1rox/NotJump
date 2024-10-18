@@ -138,12 +138,11 @@ function update() {
     context.drawImage(doodler.img, doodler.x, doodler.y, doodler.width, doodler.height);
 
     updateScore();
-    drawUsername();
 
     if (gameOver) {
         context.fillStyle = "white";
         context.font = "16px Arial, sans-serif";
-        context.fillText("Game Over", boardWidth / 3, boardHeight / 2);
+        context.fillText("Game Over", boardWidth / 2, boardHeight / 2);
     }
 }
 
@@ -173,11 +172,6 @@ function moveLeft() {
 
 function stopDoodler() {
     velocityX = 0;
-}
-function drawUsername() {
-    context.fillStyle = "white";
-    context.font = "16px sans-serif";
-    context.fillText(` ${username}`, 250, 25);
 }
 function restartGame() {
     doodler = {
@@ -247,11 +241,7 @@ function updateScore() {
         score += Math.floor(distanceTraveled);
         maxDistance = doodler.y;
     }
-
-    context.fillStyle = "white";
-    context.font = "16px monospace font-weight:";
-    context.fillText(`Score: ${Math.floor(score)}`, 5, 20);
-    context.fillText(`High Score: ${highScore}`, 5, 40);
+    document.getElementById('currentscore').innerText = score;
 }
 
 async function checkHighScore() {
@@ -275,4 +265,5 @@ async function checkHighScore() {
             console.error(error);
         }
         
-}}
+}
+document.getElementById('highscore1').innerText = highScore;}

@@ -17,5 +17,11 @@ window.onload = function() {
 };
 
 window.onresize = resizeCanvas;
-
-let username = tg.initDataUnsafe.user.username;
+let username = 'Jony';
+function updateUsername(){
+    let username = tg.initDataUnsafe.user.username;
+    document.getElementById('username1').innerText = username;
+}
+document.addEventListener('DOMContentLoaded', function() {
+    updateUsername();
+});
