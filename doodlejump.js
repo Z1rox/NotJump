@@ -1,6 +1,6 @@
 
 let board, context;
-let boardWidth = 360;
+let boardWidth = 384;
 let boardHeight = 576;
 
 let doodlerWidth = 46;
