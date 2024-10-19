@@ -6,7 +6,7 @@
 body {
     user-select: none;
     text-align: center;
-    width: 100%;
+    width: 384px;
 }
 
 body, html {
@@ -43,7 +43,7 @@ html {
     position: fixed;
     display: flex;
     padding-top: 0%;
-    padding-right: 15%;
+    padding-right: 150px;
 }
 .score{
     height: 10%;
@@ -51,7 +51,7 @@ html {
     color: rgb(255, 255, 255);
     text-decoration: none;
     font-family: Arial, sans-serif;
-    font-size: 24px;
+    font-size: 12px;
     display: flex;
     padding-left: 10px;
     padding-top: 10px;
