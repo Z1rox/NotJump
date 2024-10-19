@@ -42,8 +42,8 @@ html {
 .username{
     position: fixed;
     display: flex;
+    padding-left: 12%;
     padding-top: 0%;
-    padding-right: 150px;
 }
 .score{
     height: 10%;
