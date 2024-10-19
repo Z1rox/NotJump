@@ -6,12 +6,14 @@
 body {
     user-select: none;
     text-align: center;
+    background-color: #000000;
 }
 
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
+    width: 100%;
     overflow: hidden;
 }
 
