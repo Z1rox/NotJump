@@ -3,8 +3,8 @@ let board, context;
 let boardWidth = 384;
 let boardHeight = 576;
 
-let doodlerWidth = 52;
-let doodlerHeight = 56;
+let doodlerWidth = boardWidth / 6.5;
+let doodlerHeight = boardHeight / 9;
 let doodlerX = boardWidth / 2 - doodlerWidth / 2;
 let doodlerY = boardHeight * 7 / 8 - doodlerHeight;
 let doodlerRightImg, doodlerLeftImg, soundEffect;
