@@ -34,7 +34,7 @@ let isJumping = false;
 let cameraSpeed = 0.2;
 
 let highScore = localStorage.getItem("highScore") ? parseInt(localStorage.getItem("highScore")) : 0;
-
+document.getElementById('highscore1').innerText = highScore;
 class Platform {
     constructor(x, y, width, height, isSpecial = false) {
         this.x = x;
@@ -127,9 +127,9 @@ function update() {
     for (let platform of platformArray) {
         if (detectCollision(doodler, platform) && velocityY >= 0 && !isJumping) {
             if (platform.isSpecial) {
-                velocityY = initialVelocityY * 2; // Двойной прыжок для специальных платформ
+                velocityY = initialVelocityY * 2; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             } else {
-                velocityY = initialVelocityY; // Обычный прыжок
+                velocityY = initialVelocityY; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             }
             soundEffect.play();
             isJumping = true;
@@ -205,14 +205,14 @@ function placePlatforms() {
 
     for (let i = 0; i < 6; i++) {
         let randomX = Math.floor(Math.random() * (boardWidth - platformWidth));
-        let isSpecial = Math.random() < 0.2; // 20% шанс на специальную платформу
+        let isSpecial = Math.random() < 0.2; // 20% пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         platformArray.push(new Platform(randomX, boardHeight - 75 * i - 150, platformWidth, platformHeight, isSpecial));
     }
 }
 
 function newPlatform() {
     let randomX = Math.floor(Math.random() * (boardWidth - platformWidth));
-    let isSpecial = Math.random() < 0.2; // 20% шанс на специальную платформу
+    let isSpecial = Math.random() < 0.2; // 20% пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     platformArray.push(new Platform(randomX, -platformHeight, platformWidth, platformHeight, isSpecial));
 }
 
@@ -254,5 +254,6 @@ async function checkHighScore() {
             console.error(error);
         }
     }
-    document.getElementById('highscore1').innerText = highScore;
+    window.highScore = score;
+
 }
