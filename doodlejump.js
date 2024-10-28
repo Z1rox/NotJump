@@ -253,7 +253,13 @@ async function checkHighScore() {
         } catch (error) {
             console.error(error);
         }
+<<<<<<< HEAD
     }
     window.highScore = score;
 
 }
+=======
+        
+}
+document.getElementById('highscore1').innerText = highScore;}
+>>>>>>> 16d2483366f7c7fac589fa4465628cfb5cef6bfb
