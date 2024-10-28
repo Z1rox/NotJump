@@ -1,4 +1,4 @@
-fetch('http://5.42.104.249:5000/scores', {
+fetch('https://notjump.top/scores', {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',

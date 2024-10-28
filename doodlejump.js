@@ -243,7 +243,7 @@ async function checkHighScore() {
             score: highScore,
         };
         try {
-            const response = await fetch('http://5.42.104.249:5000/scores', {
+            const response = await fetch('https://notjump.top/scores', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
