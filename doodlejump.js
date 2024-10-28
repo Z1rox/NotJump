@@ -1,10 +1,9 @@
-
 let board, context;
 let boardWidth = 384;
 let boardHeight = 576;
 
-let doodlerWidth = 52;
-let doodlerHeight = 56;
+let doodlerWidth = boardWidth / 6.5;
+let doodlerHeight = boardHeight / 9;
 let doodlerX = boardWidth / 2 - doodlerWidth / 2;
 let doodlerY = boardHeight * 7 / 8 - doodlerHeight;
 let doodlerRightImg, doodlerLeftImg, soundEffect;
@@ -26,7 +25,6 @@ let maxHeight = boardHeight / 2;
 let platformArray = [];
 let platformWidth = 80;
 let platformHeight = 23;
-let platformImg;
 
 let score = 0;
 let maxDistance = doodlerY;
@@ -36,6 +34,22 @@ let isJumping = false;
 let cameraSpeed = 0.2;
 
 let highScore = localStorage.getItem("highScore") ? parseInt(localStorage.getItem("highScore")) : 0;
+
+class Platform {
+    constructor(x, y, width, height, isSpecial = false) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.isSpecial = isSpecial;
+        this.img = new Image();
+        this.img.src = isSpecial ? 'platform1.png' : 'platform.png';
+    }
+
+    draw(context) {
+        context.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
+}
 
 window.onload = function () {
     board = document.getElementById("board");
@@ -55,27 +69,23 @@ window.onload = function () {
     doodlerLeftImg = new Image();
     doodlerLeftImg.src = "./player.png";
 
-    platformImg = new Image();
-    platformImg.src = "./platform.png";
-
     velocityY = initialVelocityY;
     placePlatforms();
     requestAnimationFrame(update);
 
     document.addEventListener("keydown", moveDoodler);
     document.addEventListener('touchend', handleTouchEnd);
-
     board.addEventListener('touchstart', handleTouch);
 
     function handleTouch(e) {
         let touchX = e.changedTouches[0].clientX;
-
         if (touchX < boardWidth / 2) {
             moveLeft();
         } else {
             moveRight();
         }
     }
+
     function handleTouchEnd(e) {
         stopMove();
     }
@@ -107,18 +117,20 @@ function update() {
         let cameraShift = (maxHeight - doodler.y) * cameraSpeed;
         doodler.y += cameraShift;
 
-        for (let i = 0; i < platformArray.length; i++) {
-            platformArray[i].y += cameraShift;
+        for (let platform of platformArray) {
+            platform.y += cameraShift;
         }
 
         score += Math.floor(cameraShift);
     }
 
-    for (let i = 0; i < platformArray.length; i++) {
-        let platform = platformArray[i];
-
+    for (let platform of platformArray) {
         if (detectCollision(doodler, platform) && velocityY >= 0 && !isJumping) {
-            velocityY = initialVelocityY;
+            if (platform.isSpecial) {
+                velocityY = initialVelocityY * 2; // Двойной прыжок для специальных платформ
+            } else {
+                velocityY = initialVelocityY; // Обычный прыжок
+            }
             soundEffect.play();
             isJumping = true;
         }
@@ -128,7 +140,7 @@ function update() {
             newPlatform();
         }
 
-        context.drawImage(platform.img, platform.x, platform.y, platform.width, platform.height);
+        platform.draw(context);
     }
 
     if (velocityY > 0) {
@@ -136,7 +148,6 @@ function update() {
     }
 
     context.drawImage(doodler.img, doodler.x, doodler.y, doodler.width, doodler.height);
-
     updateScore();
 
     if (gameOver) {
@@ -149,7 +160,7 @@ function update() {
 function moveDoodler(e) {
     if (e.code == "ArrowRight" || e.code == "KeyD") {
         moveRight();
-    } else if (e.code == "ArrowLeft" ||     e.code == "KeyA") {
+    } else if (e.code == "ArrowLeft" || e.code == "KeyA") {
         moveLeft();
     } else if (e.code == "Space" && gameOver) {
         restartGame();
@@ -160,6 +171,7 @@ function moveRight() {
     velocityX = 4;
     doodler.img = doodlerRightImg;
 }
+
 function stopMove() {
     velocityX = 0;
     doodler.img = doodlerRightImg;
@@ -170,9 +182,6 @@ function moveLeft() {
     doodler.img = doodlerLeftImg;
 }
 
-function stopDoodler() {
-    velocityX = 0;
-}
 function restartGame() {
     doodler = {
         img: doodlerRightImg,
@@ -190,51 +199,32 @@ function restartGame() {
     placePlatforms();
 }
 
-
 function placePlatforms() {
     platformArray = [];
-    let platform = {
-        img: platformImg,
-        x: boardWidth / 2,
-        y: boardHeight - 50,
-        width: platformWidth,
-        height: platformHeight
-    };
-    platformArray.push(platform);
+    platformArray.push(new Platform(boardWidth / 2, boardHeight - 50, platformWidth, platformHeight));
 
     for (let i = 0; i < 6; i++) {
-        let randomX = Math.floor(Math.random() * boardWidth * 3 / 4);
-        let platform = {
-            img: platformImg,
-            x: randomX,
-            y: boardHeight - 75 * i - 150,
-            width: platformWidth,
-            height: platformHeight
-        }
-        platformArray.push(platform);
+        let randomX = Math.floor(Math.random() * (boardWidth - platformWidth));
+        let isSpecial = Math.random() < 0.2; // 20% шанс на специальную платформу
+        platformArray.push(new Platform(randomX, boardHeight - 75 * i - 150, platformWidth, platformHeight, isSpecial));
     }
 }
 
 function newPlatform() {
-    let randomX = Math.floor(Math.random() * boardWidth * 3 / 4);
-    let platform = {
-        img: platformImg,
-        x: randomX,
-        y: -platformHeight,
-        width: platformWidth,
-        height: platformHeight
-    };
-    platformArray.push(platform);
+    let randomX = Math.floor(Math.random() * (boardWidth - platformWidth));
+    let isSpecial = Math.random() < 0.2; // 20% шанс на специальную платформу
+    platformArray.push(new Platform(randomX, -platformHeight, platformWidth, platformHeight, isSpecial));
 }
 
 function detectCollision(a, b) {
-    const leg = 10; 
+    const leg = 10;
 
     return a.x < b.x + b.width &&
-           a.x + a.width > b.x &&
-           a.y + a.height > b.y &&
-           a.y + a.height - leg < b.y;
+        a.x + a.width > b.x &&
+        a.y + a.height > b.y &&
+        a.y + a.height - leg < b.y;
 }
+
 function updateScore() {
     if (doodler.y < maxDistance) {
         let distanceTraveled = maxDistance - doodler.y;
@@ -252,7 +242,7 @@ async function checkHighScore() {
             username: `${username}`,
             score: highScore,
         };
-        try{
+        try {
             const response = await fetch('http://5.42.104.249:5000/scores', {
                 method: "POST",
                 headers: {
@@ -260,10 +250,9 @@ async function checkHighScore() {
                 },
                 body: JSON.stringify(data)
             });
-        }
-        catch (error) {
+        } catch (error) {
             console.error(error);
         }
-        
+    }
+    document.getElementById('highscore1').innerText = highScore;
 }
-document.getElementById('highscore1').innerText = highScore;}
