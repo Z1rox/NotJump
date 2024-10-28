@@ -10,12 +10,6 @@ function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
-
-window.onload = function() {
-    resizeCanvas();
-    telegramWebApp.isLoaded();
-};
-
 window.onresize = resizeCanvas;
 let username = 'Jony';
 function updateUsername(){
