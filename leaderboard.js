@@ -1,28 +1,51 @@
-fetch('https://notjump.top/scores', {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-})
-.then(response => response.json())
-.then(data => {
-    displayLeaderboard(data);
-})
-.catch(error => console.error('Error:', error));
+document.addEventListener("DOMContentLoaded", () => {
+    const leaderboardContainer = document.getElementById("leaderboard");
+    async function fetchAndDisplayLeaderboard() {
+        try {
+            const response = await fetch('https://notjump.top/scores', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            
+            const data = await response.json();
 
-function displayLeaderboard(players) {
-    const leaderboardDiv = document.getElementById('leaderboard');
+            const sortedData = data
+                .map(item => ({ ...item, score: parseInt(item.score, 10) || 0 }))
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 100);
 
-    if (!Array.isArray(players)) {
-        players = [players];
+            leaderboardContainer.innerHTML = "";
+
+            sortedData.forEach((player, index) => {
+                const playerElement = document.createElement("div");
+                playerElement.classList.add("player");
+                playerElement.innerHTML = `<strong>#${index + 1}</strong> ${player.username}: ${player.score}`;
+                leaderboardContainer.appendChild(playerElement);
+            });
+        } catch (error) {
+            console.error("error", error);
+            leaderboardContainer.innerHTML = "<p>Error</p>";
+        }
     }
+    fetchAndDisplayLeaderboard();
+});
+sortedData.forEach((player, index) => {
+    const playerElement = document.createElement("div");
+    playerElement.classList.add("player");
 
-    players.forEach((player, index) => {
-        const playerDiv = document.createElement('div');
-        playerDiv.classList.add('player');
-        
-        playerDiv.innerHTML = `${index + 1}. <strong>${player.username}</strong>: ${player.score} points`;
+    playerElement.innerHTML = `
+        <div class="rank">#${index + 1}</div>
+        <div class="info">
+            <div class="username">${player.username}</div>
+            <div class="score">${player.score}</div>
+        </div>
+    `;
 
-        leaderboardDiv.appendChild(playerDiv);
-    });
-}
+    leaderboardContainer.appendChild(playerElement);
+});

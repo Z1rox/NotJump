@@ -1,5 +1,6 @@
 body {
     text-align: center;
+    width: 384px;
 }
 
 body, html {
@@ -17,23 +18,94 @@ body, html {
     background-image: url("./background.png");
     background-size: cover;
 }
-
-canvas {
-    display: block;
-    width: 100vw;
-    height: 100vh;
-}
-
 html {
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }   
-.click{
-    height: 10%;
-    background-color: #61dafb;
+
+.leaderboard1 {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.player {
     display: flex;
-    justify-content: center;
     align-items: center;
+    font-size: 18px;
+    margin: 10px 0;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.rank {
+    width: 100%; /* Определяем ширину для рангов */
+    font-weight: bold;
+    color: #4CAF50;
+    text-align: left; /* Выравниваем ранги слева */
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px; /* Расстояние между рангом и информацией */
+}
+
+.username {
+    font-weight: bold;
+    color: #333;
+}
+
+.score {
+    color: #888;
+    font-size: 16px;
+}
+
+.click{ 
+    height: 10%;
+    width: 100%;
+    background-color: #000000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+.shop, .leaderboard {
+    flex: 1;
+    text-align: center;
+}
+.game {
+    flex: 1;
+    text-align: center;
+    font-size: 12px
+}
+.click a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+}
+@media (max-width: 767px) {
+    .click {
+        width: 100%;
+    }
+}
+
+
+@media (min-width: 768px) {
+    .click {
+        max-width: 1200px;
+    }
 }

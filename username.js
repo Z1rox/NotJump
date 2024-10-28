@@ -11,7 +11,6 @@ function resizeCanvas() {
     canvas.height = window.innerHeight;
 }
 window.onresize = resizeCanvas;
-let username = 'Jony';
 function updateUsername(){
     let username = tg.initDataUnsafe.user.username;
     document.getElementById('username1').innerText = username;

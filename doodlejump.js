@@ -205,14 +205,14 @@ function placePlatforms() {
 
     for (let i = 0; i < 6; i++) {
         let randomX = Math.floor(Math.random() * (boardWidth - platformWidth));
-        let isSpecial = Math.random() < 0.2; // 20% ���� �� ����������� ���������
+        let isSpecial = Math.random() < 0.1; // 20% ���� �� ����������� ���������
         platformArray.push(new Platform(randomX, boardHeight - 75 * i - 150, platformWidth, platformHeight, isSpecial));
     }
 }
 
 function newPlatform() {
     let randomX = Math.floor(Math.random() * (boardWidth - platformWidth));
-    let isSpecial = Math.random() < 0.2; // 20% ���� �� ����������� ���������
+    let isSpecial = Math.random() < 0.1; // 20% ���� �� ����������� ���������
     platformArray.push(new Platform(randomX, -platformHeight, platformWidth, platformHeight, isSpecial));
 }
 
