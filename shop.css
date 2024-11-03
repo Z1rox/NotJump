@@ -8,7 +8,18 @@ body {
     text-align: center;
     width: 384px;
 }
-
+.score{
+    height: 10%;
+    background-color: #000000;
+}
+.Halloween{
+    margin-left: 20px;
+    width: 125px;
+    height: 125px;
+    background-color: #FF8000;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+}
 body, html {
     margin: 0;
     padding: 0;
@@ -16,12 +27,9 @@ body, html {
     overflow: hidden;
 }
 
-canvas {
-    height: 90%;
-    display: block;
-    margin: 0 auto;
-    width: 100%;
-    background-color: black;
+.board{
+    height: 80%;
+    background-color: #000025;
 }
 
 html {

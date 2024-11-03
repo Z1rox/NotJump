@@ -52,22 +52,20 @@ class Platform {
     }
 }
 
-let lastTime = 0; // Переменная для хранения времени предыдущего кадра
+let lastTime = 0;
 
 function update(time) {
     if (gameOver) return;
 
-    const deltaTime = (time - lastTime) / 1000; // Время между кадрами в секундах
+    const deltaTime = (time - lastTime) / 1000;
     lastTime = time;
 
     context.clearRect(0, 0, board.width, board.height);
 
-    // Обновление позиции персонажа с учетом времени между кадрами
-    doodler.x += velocityX * deltaTime * 60; // Нормализуем к 60 FPS
+    doodler.x += velocityX * deltaTime * 60;
     if (doodler.x > boardWidth) doodler.x = 0;
     else if (doodler.x + doodler.width < 0) doodler.x = boardWidth;
 
-    // Актуализируем скорость и позицию по Y с учетом времени между кадрами
     velocityY += gravity * deltaTime * 60;
     doodler.y += velocityY * deltaTime * 60;
 
@@ -119,7 +117,6 @@ function update(time) {
         context.fillText("Game Over", boardWidth / 2, boardHeight / 2);
     }
 
-    // Запрашиваем следующий кадр
     requestAnimationFrame(update);
 }
 
@@ -144,7 +141,6 @@ window.onload = function () {
     velocityY = initialVelocityY;
     placePlatforms();
 
-    // Инициализируем `lastTime` и запускаем первый кадр
     lastTime = performance.now();
     requestAnimationFrame(update);
 
@@ -155,7 +151,7 @@ window.onload = function () {
     function handleTouch(e) {
         let touchX = e.changedTouches[0].clientX;
         if (touchX < boardWidth / 2) {
-            moveLeft();
+            moveLeft(); 
         } else if(touchX > 0 && gameOver){
             restartGame();
         }

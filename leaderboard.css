@@ -1,14 +1,6 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.text1{
+    color: white;
 }
-body {
-    user-select: none;
-    text-align: center;
-    width: 384px;
-}
-
 
 body, html {
     overflow: hidden;
@@ -21,57 +13,47 @@ body, html {
     align-items: center;
 }
 
-#board {
-    background-image: url("./background.png");
-    background-size: cover;
-}
 html {
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }   
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: #fff;
+}
 
-.leaderboard1 {
-    max-width: 600px;
-    width: 100%;
+.leaderboard {
+    max-width: 300px;
     margin: 0 auto;
-    background-color: #fff;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
 }
 
 .player {
     display: flex;
     align-items: center;
-    font-size: 18px;
-    margin: 10px 0;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+    padding: 5px 0;
+    font-size: 16px;
 }
 
 .rank {
-    width: 100%; /* Определяем ширину для рангов */
-    font-weight: bold;
-    color: #4CAF50;
-    text-align: left; /* Выравниваем ранги слева */
-}
-
-.info {
-    display: flex;
-    flex-direction: column;
-    margin-left: 20px; /* Расстояние между рангом и информацией */
+    color: #ff6f00;
+    margin-right: 10px;
+    width: 40px;
 }
 
 .username {
-    font-weight: bold;
-    color: #333;
+    flex: 1;
+    color: #ffffff;
 }
 
 .score {
-    color: #888;
+    color: #ffffff;
     font-size: 16px;
+    width: 60px;
 }
 
 .click {
@@ -95,8 +77,10 @@ html {
     align-items: center;
     text-align: center;
 }
-
-.shop, .leaderboard, .Home{
+.leaderboard{
+    color: aliceblue;
+}
+.shop, .leaderboard1, .Home{
     flex: 1;
     text-align: center;
 }
@@ -106,6 +90,11 @@ html {
     font-family: Arial, sans-serif;
     font-size: 12px;
 }
+
+.text1{
+    color: white;
+}
+
 @media (max-width: 767px) {
     .click {
         width: 100%;
