@@ -149,13 +149,23 @@ window.onload = function () {
     requestAnimationFrame(update);
 
     document.addEventListener("keydown", moveDoodler);
-    document.addEventListener('click', handleClickOrTouch); // Добавлено событие для клика
-    document.addEventListener('touchend', handleClickOrTouch); // Добавлено событие для касания
+    document.addEventListener('touchend', handleTouchEnd);
+    board.addEventListener('touchstart', handleTouch);
 
-    function handleClickOrTouch(e) {
-        if (gameOver) {
-            restartGame(); // Перезапуск игры при нажатии
+    function handleTouch(e) {
+        let touchX = e.changedTouches[0].clientX;
+        if (touchX < boardWidth / 2) {
+            moveLeft();
+        } else if(touchX > 0 && gameOver){
+            restartGame();
         }
+         else {
+            moveRight();
+        }
+    }
+
+    function handleTouchEnd(e) {
+        stopMove();
     }
 }
 
@@ -163,11 +173,11 @@ function moveDoodler(e) {
     if (e.code == "ArrowRight" || e.code == "KeyD") {
         moveRight();
     } else if (e.code == "ArrowLeft" || e.code == "KeyA") {
-        moveLeft();
-    } else if (e.code == "ArrowUp" || e.code == "X") {
+        moveLeft();}
+    else if (e.code == "ArrowUp" || e.code == "X") {
         stopMove();
-    } else if (e.code == "Space" && gameOver) {
-        restartGame(); // Перезапуск при нажатии пробела
+    } else if (e.code == "Space" && gameOver == true) {
+        restartGame();
     }
 }
 
