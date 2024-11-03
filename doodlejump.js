@@ -35,6 +35,7 @@ let cameraSpeed = 0.2;
 
 let highScore = localStorage.getItem("highScore") ? parseInt(localStorage.getItem("highScore")) : 0;
 document.getElementById('highscore1').innerText = highScore;
+
 class Platform {
     constructor(x, y, width, height, isSpecial = false) {
         this.x = x;
@@ -51,58 +52,24 @@ class Platform {
     }
 }
 
-window.onload = function () {
-    board = document.getElementById("board");
-    board.height = boardHeight;
-    board.width = boardWidth;
-    context = board.getContext("2d");
+let lastTime = 0; // Переменная для хранения времени предыдущего кадра
 
-    doodlerRightImg = new Image();
-    doodlerRightImg.src = "./player.png";
-    doodler.img = doodlerRightImg;
-
-    soundEffect = new Audio('BounceYoFrankie.wav');
-    doodlerRightImg.onload = function () {
-        context.drawImage(doodler.img, doodler.x, doodler.y, doodler.width, doodler.height);
-    }
-
-    doodlerLeftImg = new Image();
-    doodlerLeftImg.src = "./player.png";
-
-    velocityY = initialVelocityY;
-    placePlatforms();
-    requestAnimationFrame(update);
-
-    document.addEventListener("keydown", moveDoodler);
-    document.addEventListener('touchend', handleTouchEnd);
-    board.addEventListener('touchstart', handleTouch);
-
-    function handleTouch(e) {
-        let touchX = e.changedTouches[0].clientX;
-        if (touchX < boardWidth / 2) {
-            moveLeft();
-        } else {
-            moveRight();
-        }
-    }
-
-    function handleTouchEnd(e) {
-        stopMove();
-    }
-}
-
-function update() {
-    requestAnimationFrame(update);
+function update(time) {
     if (gameOver) return;
+
+    const deltaTime = (time - lastTime) / 1000; // Время между кадрами в секундах
+    lastTime = time;
 
     context.clearRect(0, 0, board.width, board.height);
 
-    doodler.x += velocityX;
+    // Обновление позиции персонажа с учетом времени между кадрами
+    doodler.x += velocityX * deltaTime * 60; // Нормализуем к 60 FPS
     if (doodler.x > boardWidth) doodler.x = 0;
     else if (doodler.x + doodler.width < 0) doodler.x = boardWidth;
 
-    velocityY += gravity;
-    doodler.y += velocityY;
+    // Актуализируем скорость и позицию по Y с учетом времени между кадрами
+    velocityY += gravity * deltaTime * 60;
+    doodler.y += velocityY * deltaTime * 60;
 
     if (doodler.y < 0) {
         doodler.y = 0;
@@ -115,22 +82,18 @@ function update() {
 
     if (doodler.y < maxHeight) {
         let cameraShift = (maxHeight - doodler.y) * cameraSpeed;
-        doodler.y += cameraShift;
+        doodler.y += cameraShift * deltaTime * 60;
 
         for (let platform of platformArray) {
-            platform.y += cameraShift;
+            platform.y += cameraShift * deltaTime * 60;
         }
 
-        score += Math.floor(cameraShift);
+        score += Math.floor(cameraShift * deltaTime * 60);
     }
 
     for (let platform of platformArray) {
         if (detectCollision(doodler, platform) && velocityY >= 0 && !isJumping) {
-            if (platform.isSpecial) {
-                velocityY = initialVelocityY * 2; // ������� ������ ��� ����������� ��������
-            } else {
-                velocityY = initialVelocityY; // ������� ������
-            }
+            velocityY = platform.isSpecial ? initialVelocityY * 2 : initialVelocityY;
             soundEffect.play();
             isJumping = true;
         }
@@ -155,6 +118,39 @@ function update() {
         context.font = "16px Arial, sans-serif";
         context.fillText("Game Over", boardWidth / 2, boardHeight / 2);
     }
+
+    // Запрашиваем следующий кадр
+    requestAnimationFrame(update);
+}
+
+window.onload = function () {
+    board = document.getElementById("board");
+    board.height = boardHeight;
+    board.width = boardWidth;
+    context = board.getContext("2d");
+
+    doodlerRightImg = new Image();
+    doodlerRightImg.src = "./player.png";
+    doodler.img = doodlerRightImg;
+
+    soundEffect = new Audio('BounceYoFrankie.wav');
+    doodlerRightImg.onload = function () {
+        context.drawImage(doodler.img, doodler.x, doodler.y, doodler.width, doodler.height);
+    }
+
+    doodlerLeftImg = new Image();
+    doodlerLeftImg.src = "./player.png";
+
+    velocityY = initialVelocityY;
+    placePlatforms();
+
+    // Инициализируем `lastTime` и запускаем первый кадр
+    lastTime = performance.now();
+    requestAnimationFrame(update);
+
+    document.addEventListener("keydown", moveDoodler);
+    document.addEventListener('touchend', handleTouchEnd);
+    board.addEventListener('touchstart', handleTouch);
 }
 
 function moveDoodler(e) {
@@ -205,14 +201,14 @@ function placePlatforms() {
 
     for (let i = 0; i < 6; i++) {
         let randomX = Math.floor(Math.random() * (boardWidth - platformWidth));
-        let isSpecial = Math.random() < 0.1; // 20% ���� �� ����������� ���������
+        let isSpecial = Math.random() < 0.1;
         platformArray.push(new Platform(randomX, boardHeight - 75 * i - 150, platformWidth, platformHeight, isSpecial));
     }
 }
 
 function newPlatform() {
     let randomX = Math.floor(Math.random() * (boardWidth - platformWidth));
-    let isSpecial = Math.random() < 0.1; // 20% ���� �� ����������� ���������
+    let isSpecial = Math.random() < 0.1;
     platformArray.push(new Platform(randomX, -platformHeight, platformWidth, platformHeight, isSpecial));
 }
 
@@ -254,4 +250,5 @@ async function checkHighScore() {
             console.error(error);
         }
         window.highScore = score;
-}}
+    }
+}
