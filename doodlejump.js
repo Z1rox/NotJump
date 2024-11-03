@@ -2,8 +2,8 @@ let board, context;
 let boardWidth = 384;
 let boardHeight = 576;
 
-let doodlerWidth = boardWidth / 6.5;
-let doodlerHeight = boardHeight / 9;
+let doodlerWidth = boardWidth / 6;
+let doodlerHeight = boardHeight / 8;
 let doodlerX = boardWidth / 2 - doodlerWidth / 2;
 let doodlerY = boardHeight * 7 / 8 - doodlerHeight;
 let doodlerRightImg, doodlerLeftImg, soundEffect;
@@ -24,7 +24,7 @@ let maxHeight = boardHeight / 2;
 
 let platformArray = [];
 let platformWidth = 80;
-let platformHeight = 23;
+let platformHeight = 25;
 
 let score = 0;
 let maxDistance = doodlerY;
@@ -139,7 +139,7 @@ window.onload = function () {
     }
 
     doodlerLeftImg = new Image();
-    doodlerLeftImg.src = "./player.png";
+    doodlerLeftImg.src = "./player1.png";
 
     velocityY = initialVelocityY;
     placePlatforms();
@@ -151,6 +151,19 @@ window.onload = function () {
     document.addEventListener("keydown", moveDoodler);
     document.addEventListener('touchend', handleTouchEnd);
     board.addEventListener('touchstart', handleTouch);
+
+    function handleTouch(e) {
+        let touchX = e.changedTouches[0].clientX;
+        if (touchX < boardWidth / 2) {
+            moveLeft();
+        } else {
+            moveRight();
+        }
+    }
+
+    function handleTouchEnd(e) {
+        stopMove();
+    }
 }
 
 function moveDoodler(e) {
