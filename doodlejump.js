@@ -149,14 +149,15 @@ window.onload = function () {
     board.addEventListener('touchstart', handleTouch);
 
     function handleTouch(e) {
-        let touchX = e.changedTouches[0].clientX;
-        if (touchX < boardWidth / 2) {
-            moveLeft(); 
-        } else if(touchX > 0 && gameOver){
+        if (gameOver) {
             restartGame();
-        }
-         else {
-            moveRight();
+        } else {
+            let touchX = e.changedTouches[0].clientX;
+            if (touchX < boardWidth / 2) {
+                moveLeft();
+            } else {
+                moveRight();
+            }
         }
     }
 
@@ -166,14 +167,16 @@ window.onload = function () {
 }
 
 function moveDoodler(e) {
-    if (e.code == "ArrowRight" || e.code == "KeyD") {
-        moveRight();
-    } else if (e.code == "ArrowLeft" || e.code == "KeyA") {
-        moveLeft();}
-    else if (e.code == "ArrowUp" || e.code == "X") {
-        stopMove();
-    } else if (e.code == "Space" && gameOver == true) {
-        restartGame();
+    if (gameOver) {
+        if (e.code === "Space") {
+            restartGame();
+        }
+    } else {
+        if (e.code === "ArrowRight" || e.code === "KeyD") {
+            moveRight();
+        } else if (e.code === "ArrowLeft" || e.code === "KeyA") {
+            moveLeft();
+        }
     }
 }
 
@@ -207,6 +210,7 @@ function restartGame() {
     maxDistance = doodlerY;
     gameOver = false;
     placePlatforms();
+    requestAnimationFrame(update);
 }
 
 function placePlatforms() {
