@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             hideLoadingScreen();
         }
-    }, 3000);
+    }, 1);
 });
 
 tg.expand();
