@@ -252,6 +252,7 @@ async function checkHighScore() {
     if (score > highScore) {
         highScore = score;
         localStorage.setItem("highScore", highScore);
+        console.log(`${username}`);
         let data = {
             username: `${username}`,
             score: highScore,
@@ -264,8 +265,15 @@ async function checkHighScore() {
                 },
                 body: JSON.stringify(data)
             });
+            if (!response.ok) {
+                throw new Error(`Ошибка: ${response.status} - ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            console.log("Данные успешно отправлены:", result);
+
         } catch (error) {
-            console.error(error);
+            console.error("Произошла ошибка при отправке данных:", error);
         }
         window.highScore = score;
     }
