@@ -1,3 +1,5 @@
+const tg = Telegram.WebApp;
+let username = tg.initDataUnsafe.user.username;
 let board, context;
 let boardWidth = 384;
 let boardHeight = 576;
@@ -252,9 +254,9 @@ async function checkHighScore() {
     if (score > highScore) {
         highScore = score;
         localStorage.setItem("highScore", highScore);
-        console.log(`${username}`);
+        console.log(username);
         let data = {
-            username: `${username}`,
+            username: username,
             score: highScore,
         };
         try {
