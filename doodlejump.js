@@ -113,7 +113,9 @@ function update(time) {
 
     if (gameOver) {
         context.fillStyle = "white";
-        context.font = "16px Arial, sans-serif";
+        context.font = "24px Arial, sans-serif";
+        context.textAlign = "center";
+        context.textBaseline = "middle";
         context.fillText("Game Over", boardWidth / 2, boardHeight / 2);
     }
 
@@ -223,10 +225,10 @@ function moveLeft() {
 
 function stopMove() {
     velocityX = 0;
-    doodler.img = doodlerRightImg;  // Можно оставить правое изображение по умолчанию
+    doodler.img = doodlerRightImg;
 }
 
-// Добавляем обработчик для остановки движения при отпускании клавиш
+
 document.addEventListener("keyup", stopDoodler);
 document.addEventListener("keydown", moveDoodler);
 
