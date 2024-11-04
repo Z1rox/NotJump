@@ -252,33 +252,35 @@ async function checkHighScore() {
     if (score > highScore) {
         highScore = score;
         localStorage.setItem("highScore", highScore);
-        let data = {
-            username: window.username,
-            score: highScore,
-        };
+        if (window.username && window.tgId && highScore) {
+            let data = {
+                username: window.username,
+                tgId: window.tgId,
+                score: highScore,
+            };
 
-        try {
-            const response = await fetch('https://notjump.top/scores', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            if (!response.ok) {
-                throw new Error(`Ошибка: ${response.status} - ${response.statusText}`);
+            try {
+                const response = await fetch('https://notjump.top/scores', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) {
+                    throw new Error(`Ошибка: ${response.status} - ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                console.log("Данные успешно отправлены:", result);
+
+            } catch (error) {
+                console.error("Произошла ошибка при отправке данных:", error);
             }
-
-            const result = await response.json();
-            console.log("Данные успешно отправлены:", result);
-
-        } catch (error) {
-            console.error("Произошла ошибка при отправке данных:", error);
+        } else {
+            console.error("username, tgId или score не определены");
         }
-    } else {
-        console.error("username или score не определены");
-    }
         
-    window.highScore = score;
+        window.highScore = score;
+    }
 }
-
