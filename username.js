@@ -1,20 +1,4 @@
 const tg = Telegram.WebApp;
-document.addEventListener("DOMContentLoaded", () => {
-    const loadingScreen = document.getElementById("loading-screen");
-
-    function hideLoadingScreen() {
-        loadingScreen.style.display = "none";
-    }
-
-    const tg = window.Telegram.WebApp;
-    tg.onEvent("web_app_ready", hideLoadingScreen);
-    setTimeout(() => {
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            hideLoadingScreen();
-        }
-    }, 1);
-});
-
 tg.expand();
 tg.setHeaderColor("#000000");
 tg.setBackgroundColor("#000000");
