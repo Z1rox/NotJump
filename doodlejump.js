@@ -166,19 +166,70 @@ window.onload = function () {
     }
 }
 
+let isMovingRight = false;
+let isMovingLeft = false;
+
 function moveDoodler(e) {
     if (gameOver) {
         if (e.code === "Space") {
             restartGame();
         }
     } else {
-        if (e.code === "ArrowRight" || e.code === "KeyD") {
+        if ((e.code === "ArrowRight" || e.code === "KeyD") && !isMovingRight) {
+            isMovingRight = true;
             moveRight();
-        } else if (e.code === "ArrowLeft" || e.code === "KeyA") {
+        } else if ((e.code === "ArrowLeft" || e.code === "KeyA") && !isMovingLeft) {
+            isMovingLeft = true;
             moveLeft();
         }
     }
 }
+
+function stopDoodler(e) {
+    if (e.code === "ArrowRight" || e.code === "KeyD") {
+        isMovingRight = false;
+        if (!isMovingLeft) stopMove();
+    } else if (e.code === "ArrowLeft" || e.code === "KeyA") {
+        isMovingLeft = false;
+        if (!isMovingRight) stopMove();
+    }
+}
+
+function moveRight() {
+    velocityX = 4;
+    doodler.img = doodlerRightImg;
+
+    if (!isMovingRight) {
+        setTimeout(() => {
+            if (!isMovingRight) {
+                stopMove();
+            }
+        }, 50);  // Останавливаем движение после 50 мс при одиночном нажатии
+    }
+}
+
+function moveLeft() {
+    velocityX = -4;
+    doodler.img = doodlerLeftImg;
+
+    if (!isMovingLeft) {
+        setTimeout(() => {
+            if (!isMovingLeft) {
+                stopMove();
+            }
+        }, 50);  // Останавливаем движение после 50 мс при одиночном нажатии
+    }
+}
+
+function stopMove() {
+    velocityX = 0;
+    doodler.img = doodlerRightImg;  // Можно оставить правое изображение по умолчанию
+}
+
+// Добавляем обработчик для остановки движения при отпускании клавиш
+document.addEventListener("keyup", stopDoodler);
+document.addEventListener("keydown", moveDoodler);
+
 
 function moveRight() {
     velocityX = 4;
