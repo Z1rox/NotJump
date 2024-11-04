@@ -1,16 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Doodle Jump</title>
     <link rel="stylesheet" href="shop.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #000000;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .score {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .board {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .Halloween {
+            position: relative;
+            margin: 20px; /* Отступы от краев экрана */
+            text-align: center;
+        }
+        .icon {
+            height: 100px;
+            width: 100px;
+        }
+        .claim-button, .delete-button {
+            margin-top: 20px; /* Отступ сверху для кнопки */
+            padding: 10px 20px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .claim-button {
+            background-color: green; /* Цвет кнопки Claim */
+        }
+        .delete-button {
+            background-color: red; /* Цвет кнопки Delete */
+            display: none; /* Скрываем кнопку Delete изначально */
+        }
+        .unavailable {
+            background-color: grey; /* Серый цвет для недоступной кнопки */
+            cursor: not-allowed; /* Курсор в виде запрета */
+        }
+    </style>
 </head>
 <body>
     <div class="score">
         <div class="highscore">
-            Highscore: <span id="highscore1"></span>
+            Highscore: <span id="highscore1">0</span>
         </div>
         <div class="username">
             <span id="username1">None</span>
@@ -18,19 +68,20 @@
     </div>
     <div class="board">
         <div class="Halloween">
-            <img src="player.png" style="height: 100px;">
-                <div>Halloween Pack</div>
-                <button></button>
+            <img src="player.png" class="icon" alt="Player Icon">
+            <div>Halloween Pack</div>
+            <button id="claimButton" class="claim-button" style="display: none;">Claim</button>
+            <button id="deleteButton" class="delete-button">Delete</button>
         </div>
     </div>
     <div class="click">
-        <div class = "home">
+        <div class="home">
             <a class="home" href="index.html">
                 <img src="images/home.png" style="height: 30px;">
                 <div>Home</div>
             </a>
         </div>
-        <div class = "shop">
+        <div class="shop">
             <a class="shop" href="shop.html">
                 <img src="images/shop_used.png" style="height: 30px;">
                 <div>Shop</div>
@@ -42,7 +93,7 @@
                 <div>Squads</div>
             </a>
         </div>
-        <div class = "leaderboard">
+        <div class="leaderboard">
             <a class="leaderboard" href="leaderboard.html">
                 <img src="images/leaders.png" style="height: 30px;">
                 <div>Leaders</div>
@@ -51,5 +102,40 @@
     </div>
     <script src="username.js"></script>
     <script src="shop.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Получаем highscore из localStorage, если он есть, иначе устанавливаем в 0
+            const highscore = parseInt(localStorage.getItem('highscore')) || 0;
+            document.getElementById('highscore1').innerText = highscore;
+
+            // Проверяем highscore и отображаем кнопку в зависимости от его значения
+            const claimButton = document.getElementById('claimButton');
+            const deleteButton = document.getElementById('deleteButton');
+
+            if (highscore >= 10000) {
+                claimButton.style.display = 'block';
+            } else {
+                claimButton.innerText = 'Unavailable';
+                claimButton.classList.add('unavailable');
+                claimButton.disabled = true; // Делаем кнопку недоступной
+            }
+
+            // Обработчик нажатия на кнопку Claim
+            claimButton.addEventListener('click', function() {
+                localStorage.setItem('claimed', '1'); // Сохраняем данные в локальном хранилище
+                claimButton.style.display = 'none'; // Скрываем кнопку Claim
+                deleteButton.style.display = 'block'; // Показываем кнопку Delete
+            });
+
+            // Обработчик нажатия на кнопку Delete
+            deleteButton.addEventListener('click', function() {
+                localStorage.setItem('claimed', '0'); // Сбрасываем данные в локальном хранилище
+                deleteButton.style.display = 'none'; // Скрываем кнопку Delete
+                claimButton.style.display = 'block'; // Показываем кнопку Claim
+                claimButton.classList.remove('unavailable');
+                claimButton.innerText = 'Claim';
+            });
+        });
+    </script>
 </body>
 </html>

@@ -3,21 +3,28 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
     user-select: none;
     text-align: center;
-    width: 384px;
-}
-body, html {
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
+    width: 100%;
+    max-width: 384px; /* Ограничение ширины для десктопа */
+}
+
+html, body {
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
 }
 
 #board {
     background-image: url("./background.png");
     background-size: cover;
+    width: 100%; /* Заполнение ширины board в рамках ограничений */
 }
 
 canvas {
@@ -27,47 +34,43 @@ canvas {
     width: 100%;
 }
 
-html {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 .highscore {
     position: fixed;
     display: flex;
-    padding-top: 5%
+    padding-top: 5%;
 }
-.username{
+
+.username {
     position: fixed;
     display: flex;
     padding-left: 50%;
     padding-top: 0%;
 }
-.score{
+
+.score {
     height: 10%;
     background-color: #000000;
-    color: rgb(255, 255, 255);
-    text-decoration: none;
+    color: #ffffff;
     font-family: Arial, sans-serif;
     font-size: 12px;
     display: flex;
     padding-left: 10px;
     padding-top: 10px;
 }
+
 .click {
     height: 10%;
     background-color: #000000;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    color: rgb(255, 255, 255);
-    text-decoration: none;
+    color: #ffffff;
     font-family: Arial, sans-serif;
     font-size: 12px;
     padding: 10px;
     gap: 20px;
 }
+
 .click > div {
     flex: 1;
     display: flex;
@@ -76,25 +79,10 @@ html {
     text-align: center;
 }
 
-.shop, .leaderboard, .Home{
-    flex: 1;
-    text-align: center;
-}
-.click a {
-    color: rgb(255, 255, 255);
-    text-decoration: none;
-    font-family: Arial, sans-serif;
-    font-size: 12px;
-}
-@media (max-width: 767px) {
-    .click {
-        width: 100%;
-    }
-}
-
-
 @media (min-width: 768px) {
-    .click {
-        max-width: 1200px;
+    /* Ограничение ширины приложения на больших экранах и центрирование */
+    body {
+        max-width: 384px;
+        margin: 0 auto;
     }
 }

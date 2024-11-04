@@ -272,13 +272,12 @@ async function checkHighScore() {
                 }
 
                 const result = await response.json();
-                console.log("Данные успешно отправлены:", result);
 
             } catch (error) {
-                console.error("Произошла ошибка при отправке данных:", error);
+                console.error(error);
             }
         } else {
-            console.error("username, tgId или score не определены");
+            console.error("error");
         }
         
         window.highScore = score;
