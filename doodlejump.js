@@ -1,8 +1,6 @@
-const tg = Telegram.WebApp;
-let username = tg.initDataUnsafe.user.username;
 let board, context;
 let boardWidth = 384;
-let boardHeight = 576;
+let boardHeight = 576;  
 
 let doodlerWidth = boardWidth / 6;
 let doodlerHeight = boardHeight / 8;
@@ -254,11 +252,11 @@ async function checkHighScore() {
     if (score > highScore) {
         highScore = score;
         localStorage.setItem("highScore", highScore);
-        console.log(username);
         let data = {
-            username: username,
+            username: window.username,
             score: highScore,
         };
+
         try {
             const response = await fetch('https://notjump.top/scores', {
                 method: "POST",
@@ -277,6 +275,10 @@ async function checkHighScore() {
         } catch (error) {
             console.error("Произошла ошибка при отправке данных:", error);
         }
-        window.highScore = score;
+    } else {
+        console.error("username или score не определены");
     }
+        
+    window.highScore = score;
 }
+
