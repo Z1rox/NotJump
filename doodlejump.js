@@ -5,7 +5,7 @@ let boardHeight = 576;
 let doodlerWidth = boardWidth / 6;
 let doodlerHeight = boardHeight / 8;
 let doodlerX = boardWidth / 2 - doodlerWidth / 2;
-let doodlerY = boardHeight * 7 / 8 - doodlerHeight;
+let doodlerY = boardHeight * 7 / 6 - doodlerHeight;
 let doodlerRightImg, doodlerLeftImg, soundEffect;
 
 let doodler = {
