@@ -12,7 +12,7 @@ function resizeCanvas() {
 window.onresize = resizeCanvas;
 window.username = tg.initDataUnsafe.user.username;
 window.tgId = tg.initDataUnsafe.user.id;
-console.log(tg.WebApp.platform);
+console.log(tg.platform);
 function updateUsername() {
     document.getElementById('username1').innerText = window.username;
 }
