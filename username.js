@@ -2,7 +2,7 @@
 const tg = Telegram.WebApp;
 
 // Проверка платформы и блокировка на десктопах
-if (tg.platform === "desktop") {
+if (tg.platform === "tdesktop") {
     // Выводим сообщение и блокируем приложение
     document.body.innerHTML = "<h2>Sorry, but you need your mobile phone</h2>";
 } else {
