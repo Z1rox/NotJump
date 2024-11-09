@@ -1,17 +1,20 @@
-// Инициализация Telegram WebApp API
 const tg = Telegram.WebApp;
 
-// Проверка платформы и блокировка на десктопах
-if (tg.platform === "tdesktop") {
-    // Выводим сообщение и блокируем приложение
-    document.body.innerHTML = "<h2>Sorry, but you need your mobile phone</h2>";
+// Функция для проверки, является ли устройство мобильным
+function isMobileDevice() {
+    return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|Mobile|BlackBerry/i.test(navigator.userAgent);
+}
+
+// Проверка платформы и блокировка доступа на десктопах и других устройствах, кроме мобильных и планшетов
+if (tg.platform === "desktop" || !isMobileDevice()) {
+    // Выводим сообщение и блокируем приложение для компьютеров и других неподдерживаемых устройств
+    document.body.innerHTML = "<h2>Sorry, but you need your mobile phone or tablet to access this app.</h2>";
 } else {
-    // Основной код для мобильных устройств
+    // Код для мобильных устройств
     tg.expand();
     tg.setHeaderColor("#000000");
     tg.setBackgroundColor("#000000");
 
-    // Основной код вашего приложения
     const canvas = document.getElementById('board');
     const ctx = canvas.getContext('2d');
     
