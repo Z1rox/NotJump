@@ -33,8 +33,26 @@ let isJumping = false;
 
 let cameraSpeed = 0.2;
 
-let highScore = localStorage.getItem("highScore") ? parseInt(localStorage.getItem("highScore")) : 0;
-document.getElementById('highscore1').innerText = highScore;
+document.addEventListener('DOMContentLoaded', async function() {
+    const tgId = tg.initDataUnsafe.user.id;
+    console.log(tgId);
+
+    try {
+        const response = await fetch(`https://notjump.top/shop?tgId=${tgId}`);
+        const data = await response.json();
+        console.log(data);
+        if (data.score !== undefined) {
+            document.getElementById('highscore1').innerText = data.score;
+        } else {
+            document.getElementById('highscore1').innerText = '0';
+        }
+
+    } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+        document.getElementById('highscore1').innerText = 'Ошибка';
+    }
+});
+
 
 class Platform {
     constructor(x, y, width, height, isSpecial = false) {
