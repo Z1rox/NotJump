@@ -55,6 +55,31 @@
             background-color: grey; /* Серый цвет для недоступной кнопки */
             cursor: not-allowed; /* Курсор в виде запрета */
         }
+        .Halloween {
+            position: relative;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .claim-button {
+            margin-top: 20px; /* Отступ сверху для кнопки */
+            padding: 10px 20px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            display: block; /* Убедимся, что кнопка будет видимой */
+        }
+
+        .unavailable {
+            background-color: grey; /* Серый цвет для недоступной кнопки */
+            cursor: not-allowed; /* Курсор в виде запрета */
+        }
+
+        .claim-button {
+            background-color: green; /* Цвет кнопки Claim */
+        }
+
     </style>
 </head>
 <body>
@@ -70,9 +95,9 @@
         <div class="Halloween">
             <img src="player.png" class="icon" alt="Player Icon">
             <div>Halloween Pack</div>
-            <button id="claimButton" class="claim-button" style="display: none;">Claim</button>
-            <button id="deleteButton" class="delete-button">Delete</button>
-        </div>
+            <button id="claimButton" class="claim-button">Claim</button>
+            <button id="deleteButton" class="delete-button" style="display: none;">Delete</button>
+        </div>        
     </div>
     <div class="click">
         <div class="home">

@@ -97,3 +97,30 @@ html {
         max-width: 1200px;
     }
 }
+.Halloween {
+    position: relative;
+    margin: 20px;
+    text-align: center;
+}
+
+.claim-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+}
+
+/* Стиль для кнопки "Enable" */
+.claim-button.enabled {
+    background-color: green; /* Зеленая кнопка */
+    cursor: pointer;
+}
+
+/* Стиль для кнопки "Disable" */
+.claim-button.disabled {
+    background-color: grey; /* Серая кнопка */
+    cursor: not-allowed; /* Курсор в виде запрета, чтобы показать, что кнопка неактивна */
+}
