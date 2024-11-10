@@ -1,54 +1,27 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const claimButton = document.getElementById('claimButton');
-    const deleteButton = document.getElementById('deleteButton');
+// shop.js
+const tg = Telegram.WebApp;
 
-    // Загружаем состояние кнопки из localStorage (по умолчанию false)
-    const buttonStatus = localStorage.getItem('buttonStatus') === 'true';
+// Функция для получения score по tgId
+async function fetchScore() {
+    const tgId = tg.initDataUnsafe.user.id; // Получаем tgId из Telegram Web App
+    const url = `https://notjump.top/shop?tgId=${tgId}`; // Формируем URL запроса с tgId
 
-    // Устанавливаем состояние кнопки при загрузке страницы
-    if (buttonStatus) {
-        claimButton.innerText = 'Disable'; // Кнопка включена
-        claimButton.classList.remove('disabled');
-        claimButton.classList.add('enabled');
-    } else {
-        claimButton.innerText = 'Enable'; // Кнопка выключена
-        claimButton.classList.remove('enabled');
-        claimButton.classList.add('disabled');
+    try {
+        const response = await fetch(url); // Отправляем GET-запрос
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json(); // Получаем ответ в формате JSON
+        console.log(data)
+        document.getElementById('highscore1').innerText = data.score !== undefined ? data.score : '0'; // Обновляем элемент highscore1
+    } catch (error) {
+        console.error("Произошла ошибка при получении данных:", error);
+        document.getElementById('highscore1').innerText = 'Error'; // Выводим сообщение об ошибке
     }
+}
 
-    // Обработчик нажатия на кнопку
-    claimButton.addEventListener('click', function() {
-        const isEnabled = claimButton.classList.contains('enabled');
-        
-        // Переключаем состояние кнопки
-        if (isEnabled) {
-            // Если кнопка была включена, выключаем её
-            localStorage.setItem('buttonStatus', 'false');
-            claimButton.innerText = 'Enable';
-            claimButton.classList.remove('enabled');
-            claimButton.classList.add('disabled');
-        } else {
-            // Если кнопка была выключена, включаем её
-            localStorage.setItem('buttonStatus', 'true');
-            claimButton.innerText = 'Disable';
-            claimButton.classList.remove('disabled');
-            claimButton.classList.add('enabled');
-        }
-
-        // Показать/скрыть кнопку Delete в зависимости от состояния
-        if (claimButton.classList.contains('enabled')) {
-            deleteButton.style.display = 'block';
-        } else {
-            deleteButton.style.display = 'none';
-        }
-    });
-
-    // Обработчик нажатия на кнопку Delete
-    deleteButton.addEventListener('click', function() {
-        localStorage.setItem('buttonStatus', 'false');
-        claimButton.innerText = 'Enable';
-        claimButton.classList.remove('enabled');
-        claimButton.classList.add('disabled');
-        deleteButton.style.display = 'none';
-    });
+// Запускаем функцию после загрузки документа
+document.addEventListener('DOMContentLoaded', function() {
+    fetchScore(); // Вызываем функцию для получения score
 });
