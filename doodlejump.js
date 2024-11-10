@@ -1,7 +1,7 @@
 let board, context;
 let boardWidth = 384;
 let boardHeight = 576;  
-
+let highScore = 0;
 let doodlerWidth = boardWidth / 6;
 let doodlerHeight = boardHeight / 8;
 let doodlerX = boardWidth / 2 - doodlerWidth / 2;
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.log(data);
         
         if (data.score !== undefined) {
-            highScore = data.score;
+            highScore = data.score; // Инициализация highScore
             document.getElementById('highscore1').innerText = data.score;
         } else {
             highScore = 0;
@@ -326,7 +326,8 @@ function updateScore() {
 async function checkHighScore() {
     if (score > highScore) {
         highScore = score;
-        document.getElementById('highscore1').innerText = highScore;
+        document.getElementById('highscore1').innerText = highScore; // Обновляем highscore1 на странице
+
         if (window.username && window.tgId && highScore) {
             let data = {
                 username: window.username,
@@ -343,16 +344,17 @@ async function checkHighScore() {
                     body: JSON.stringify(data)
                 });
                 if (!response.ok) {
-                    throw new Error(`ERROR: ${response.status} - ${response.statusText}`);
+                    throw new Error(`Ошибка: ${response.status} - ${response.statusText}`);
                 }
 
                 const result = await response.json();
+                console.log("Highscore updated on server:", result);
 
             } catch (error) {
                 console.error(error);
             }
         } else {
-            console.error("ERROR");
+            console.error("Username, tgId, or highScore missing.");
         }
     }
 }
