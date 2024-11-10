@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     try {
         // Отправляем запрос на сервер для получения очков пользователя по tgId
-        const response = await fetch(`http://notjump.top/shop?tgId=${tgId}`);
+        const response = await fetch(`https://notjump.top/shop?tgId=${tgId}`);
         const data = await response.json();
         console.log(data);
         if (data.score !== undefined) {
