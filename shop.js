@@ -1,27 +1,28 @@
-// shop.js
-const tg = Telegram.WebApp;
-
-// Функция для получения score по tgId
-async function fetchScore() {
-    const tgId = tg.initDataUnsafe.user.id; // Получаем tgId из Telegram Web App
-    const url = `https://notjump.top/shop?tgId=${tgId}`; // Формируем URL запроса с tgId
+document.addEventListener('DOMContentLoaded', async function() {
+    // Здесь нужно указать tgId пользователя
+    const tgId = tg.initDataUnsafe.user.id;
+    console.log(tgId); // замените YOUR_USER_TGID на фактический tgId пользователя
 
     try {
-        const response = await fetch(url); // Отправляем GET-запрос
-        if (!response.ok) {
-            throw new Error(`Ошибка: ${response.status} - ${response.statusText}`);
+        // Отправляем запрос на сервер для получения очков пользователя по tgId
+        const response = await fetch(`http://notjump.top/shop?tgId=${tgId}`);
+        const data = await response.json();
+        console.log(data);
+        if (data.score !== undefined) {
+            // Отображаем результат в элементе с id highscore1
+            document.getElementById('highscore1').innerText = data.score;
+        } else {
+            document.getElementById('highscore1').innerText = '0'; // Если очков нет, показываем 0
         }
 
-        const data = await response.json(); // Получаем ответ в формате JSON
-        console.log(data)
-        document.getElementById('highscore1').innerText = data.score !== undefined ? data.score : '0'; // Обновляем элемент highscore1
-    } catch (error) {
-        console.error("Произошла ошибка при получении данных:", error);
-        document.getElementById('highscore1').innerText = 'Error'; // Выводим сообщение об ошибке
-    }
-}
+        // Установите также username, если есть
+        const usernameElement = document.getElementById('username1');
+        if (usernameElement) {
+            usernameElement.innerText = data.username || 'Unknown';
+        }
 
-// Запускаем функцию после загрузки документа
-document.addEventListener('DOMContentLoaded', function() {
-    fetchScore(); // Вызываем функцию для получения score
+    } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+        document.getElementById('highscore1').innerText = 'Ошибка';
+    }
 });
