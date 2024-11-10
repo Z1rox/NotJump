@@ -41,14 +41,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         const response = await fetch(`https://notjump.top/shop?tgId=${tgId}`);
         const data = await response.json();
         console.log(data);
+        
         if (data.score !== undefined) {
+            highScore = data.score;
             document.getElementById('highscore1').innerText = data.score;
         } else {
+            highScore = 0;
             document.getElementById('highscore1').innerText = '0';
         }
 
     } catch (error) {
         console.error('Ошибка при получении данных:', error);
+        highScore = 0;
         document.getElementById('highscore1').innerText = 'Ошибка';
     }
 });
@@ -322,7 +326,7 @@ function updateScore() {
 async function checkHighScore() {
     if (score > highScore) {
         highScore = score;
-        localStorage.setItem("highScore", highScore);
+        document.getElementById('highscore1').innerText = highScore;
         if (window.username && window.tgId && highScore) {
             let data = {
                 username: window.username,
@@ -339,7 +343,7 @@ async function checkHighScore() {
                     body: JSON.stringify(data)
                 });
                 if (!response.ok) {
-                    throw new Error(`Ошибка: ${response.status} - ${response.statusText}`);
+                    throw new Error(`ERROR: ${response.status} - ${response.statusText}`);
                 }
 
                 const result = await response.json();
@@ -348,9 +352,7 @@ async function checkHighScore() {
                 console.error(error);
             }
         } else {
-            console.error("error");
+            console.error("ERROR");
         }
-        
-        window.highScore = score;
     }
 }
