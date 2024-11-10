@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.log(data);
         
         if (data.score !== undefined) {
-            highScore = data.score; // Инициализация highScore
+            highScore = data.score;
             document.getElementById('highscore1').innerText = data.score;
         } else {
             highScore = 0;
@@ -228,7 +228,7 @@ function moveRight() {
             if (!isMovingRight) {
                 stopMove();
             }
-        }, 50);  // Останавливаем движение после 50 мс при одиночном нажатии
+        }, 50);
     }
 }
 
@@ -241,7 +241,7 @@ function moveLeft() {
             if (!isMovingLeft) {
                 stopMove();
             }
-        }, 50);  // Останавливаем движение после 50 мс при одиночном нажатии
+        }, 50);
     }
 }
 
@@ -326,8 +326,7 @@ function updateScore() {
 async function checkHighScore() {
     if (score > highScore) {
         highScore = score;
-        document.getElementById('highscore1').innerText = highScore; // Обновляем highscore1 на странице
-
+        document.getElementById('highscore1').innerText = highScore;
         if (window.username && window.tgId && highScore) {
             let data = {
                 username: window.username,
@@ -344,17 +343,17 @@ async function checkHighScore() {
                     body: JSON.stringify(data)
                 });
                 if (!response.ok) {
-                    throw new Error(`Ошибка: ${response.status} - ${response.statusText}`);
+                    throw new Error(`ERROR: ${response.status} - ${response.statusText}`);
                 }
 
                 const result = await response.json();
-                console.log("Highscore updated on server:", result);
 
             } catch (error) {
                 console.error(error);
             }
         } else {
-            console.error("Username, tgId, or highScore missing.");
+            console.error("ERROR");
         }
     }
 }
+ 
