@@ -74,11 +74,11 @@ function updateBackground() {
 
 function updateDoodlerImage() {
     if (skin) {
-        doodlerRightImg.src = `./player_halloween.png?timestamp=${new Date().getTime()}`;
-        doodlerLeftImg.src = `./player_halloween_1.png?timestamp=${new Date().getTime()}`;
+        doodlerRightImg.src = `./player_halloween.png`;
+        doodlerLeftImg.src = `./player_halloween_1.png`;
     } else {
-        doodlerRightImg.src = `./player.png?timestamp=${new Date().getTime()}`;
-        doodlerLeftImg.src = `./player1.png?timestamp=${new Date().getTime()}`;
+        doodlerRightImg.src = `./player.png?`;
+        doodlerLeftImg.src = `./player1.png?`;
     }
     doodler.img = doodlerRightImg;
 }
