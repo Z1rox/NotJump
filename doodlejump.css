@@ -19,10 +19,14 @@ body, html {
 #board {
     background-image: url("./background.png");
     background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat;
+    --bg-pos-y: 0px;
+    background-position-y: var(--bg-pos-y);
+    transition: background-position-y 0.1s;
 }
-
 canvas {
-    height: 80%;
+    height: 82%;
     display: block;
     margin: 0 auto;
     width: 100%;
@@ -46,7 +50,7 @@ html {
     padding-top: 0%;
 }
 .score{
-    height: 10%;
+    height: 8%;
     background-color: #000000;
     color: rgb(255, 255, 255);
     text-decoration: none;

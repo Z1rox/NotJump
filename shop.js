@@ -1,28 +1,34 @@
 document.addEventListener('DOMContentLoaded', async function() {
-    // Здесь нужно указать tgId пользователя
     const tgId = tg.initDataUnsafe.user.id;
-    console.log(tgId); // замените YOUR_USER_TGID на фактический tgId пользователя
 
     try {
-        // Отправляем запрос на сервер для получения очков пользователя по tgId
         const response = await fetch(`https://notjump.top/shop?tgId=${tgId}`);
         const data = await response.json();
-        console.log(data);
+        console.log(data.score);
+
+        // Отображаем Highscore
         if (data.score !== undefined) {
-            // Отображаем результат в элементе с id highscore1
             document.getElementById('highscore1').innerText = data.score;
         } else {
-            document.getElementById('highscore1').innerText = '0'; // Если очков нет, показываем 0
+            document.getElementById('highscore1').innerText = '0';
         }
 
-        // Установите также username, если есть
-        const usernameElement = document.getElementById('username1');
-        if (usernameElement) {
-            usernameElement.innerText = data.username || 'Unknown';
+        const claimButton = document.getElementById('claimButton');
+        const statusText = document.getElementById('statusText');
+
+        if (parseInt(data.score, 10) > 24999) {
+            claimButton.classList.add('enabled');
+            claimButton.classList.remove('disabled');
+            claimButton.innerText = 'Enabled';
+        } else {
+            claimButton.classList.add('disabled');
+            claimButton.classList.remove('enabled');
+            claimButton.innerText = 'Locked';
+            statusText.innerText = 'Your highscore is less than 25000';
         }
 
     } catch (error) {
-        console.error('Ошибка при получении данных:', error);
-        document.getElementById('highscore1').innerText = 'Ошибка';
+        console.error('ERROR', error);
+        document.getElementById('highscore1').innerText = 'Connection Error';
     }
 });

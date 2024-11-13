@@ -7,7 +7,7 @@ let doodlerHeight = boardHeight / 8;
 let doodlerX = boardWidth / 2 - doodlerWidth / 2;
 let doodlerY = boardHeight * 7 / 8 - doodlerHeight;
 let doodlerRightImg, doodlerLeftImg, soundEffect;
-
+let skin = false;
 let doodler = {
     img: null,
     x: doodlerX,
@@ -18,7 +18,7 @@ let doodler = {
 
 let velocityX = 0;
 let velocityY = 0;
-let initialVelocityY = -10;
+let initialVelocityY = -11;
 let gravity = 0.35;
 let maxHeight = boardHeight / 2;
 
@@ -35,7 +35,6 @@ let cameraSpeed = 0.2;
 
 document.addEventListener('DOMContentLoaded', async function() {
     const tgId = tg.initDataUnsafe.user.id;
-    console.log(tgId);
 
     try {
         const response = await fetch(`https://notjump.top/shop?tgId=${tgId}`);
@@ -49,15 +48,40 @@ document.addEventListener('DOMContentLoaded', async function() {
             highScore = 0;
             document.getElementById('highscore1').innerText = '0';
         }
+        
+        if (parseInt(data.score, 10) > 24999){
+            skin = true;
+        }
+
+        updateBackground();
 
     } catch (error) {
-        console.error('Ошибка при получении данных:', error);
         highScore = 0;
-        document.getElementById('highscore1').innerText = 'Ошибка';
+        document.getElementById('highscore1').innerText = 'Connection Error';
     }
 });
 
 
+function updateBackground() {
+    const board = document.getElementById("board");
+    if (skin) {
+        board.style.backgroundImage = 'url("./background_new.png")';
+    } else {
+        board.style.backgroundImage = 'url("./background.png")';
+    }
+    updateDoodlerImage();
+}
+
+function updateDoodlerImage() {
+    if (skin) {
+        doodlerRightImg.src = `./player_halloween.png?timestamp=${new Date().getTime()}`;
+        doodlerLeftImg.src = `./player_halloween_1.png?timestamp=${new Date().getTime()}`;
+    } else {
+        doodlerRightImg.src = `./player.png?timestamp=${new Date().getTime()}`;
+        doodlerLeftImg.src = `./player1.png?timestamp=${new Date().getTime()}`;
+    }
+    doodler.img = doodlerRightImg;
+}
 class Platform {
     constructor(x, y, width, height, isSpecial = false) {
         this.x = x;
@@ -73,7 +97,13 @@ class Platform {
         context.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 }
-
+class SpecialPlatform extends Platform {
+    constructor(x, y, width, height) {
+        super(x, y, width, height, true);
+        this.img.src = 'platform2.png'; // Изображение для новой платформы
+        this.canBounce = true; // Флаг для отслеживания возможности отскока
+    }
+}
 let lastTime = 0;
 
 function update(time) {
@@ -111,13 +141,27 @@ function update(time) {
         score += Math.floor(cameraShift * deltaTime * 60);
     }
 
-    for (let platform of platformArray) {
+    for (let i = 0; i < platformArray.length; i++) {
+        let platform = platformArray[i];
+
         if (detectCollision(doodler, platform) && velocityY >= 0 && !isJumping) {
-            velocityY = platform.isSpecial ? initialVelocityY * 2 : initialVelocityY;
-            soundEffect.play();
-            isJumping = true;
+            if (platform instanceof SpecialPlatform && platform.canBounce) {
+                velocityY = initialVelocityY; // Отскок
+                platform.canBounce = false; // Убираем возможность отскока
+                soundEffect.play();
+                isJumping = true;
+
+                // Удаляем платформу из массива
+                platformArray.splice(i, 1);
+                i--; // Снижаем индекс, чтобы не пропустить следующую платформу
+            } else if (!(platform instanceof SpecialPlatform)) {
+                velocityY = platform.isSpecial ? initialVelocityY * 2 : initialVelocityY;
+                soundEffect.play();
+                isJumping = true;
+            }
         }
 
+        // Удаляем платформы, которые вышли за пределы экрана
         if (platform.y >= boardHeight) {
             platformArray.shift();
             newPlatform();
@@ -144,6 +188,7 @@ function update(time) {
     requestAnimationFrame(update);
 }
 
+
 window.onload = function () {
     board = document.getElementById("board");
     board.height = boardHeight;
@@ -151,7 +196,11 @@ window.onload = function () {
     context = board.getContext("2d");
 
     doodlerRightImg = new Image();
+    if(skin){
+        doodlerRightImg.src = "./player_halloween.png";
+    }else{
     doodlerRightImg.src = "./player.png";
+    }
     doodler.img = doodlerRightImg;
 
     soundEffect = new Audio('BounceYoFrankie.wav');
@@ -160,8 +209,11 @@ window.onload = function () {
     }
 
     doodlerLeftImg = new Image();
-    doodlerLeftImg.src = "./player1.png";
-
+    if(skin){
+        doodlerLeftImg.src = "./player_halloween_1.png";
+    }else{
+        doodlerLeftImg.src = "./player1.png";
+    }
     velocityY = initialVelocityY;
     placePlatforms();
 
@@ -304,7 +356,6 @@ function newPlatform() {
     let isSpecial = Math.random() < 0.1;
     platformArray.push(new Platform(randomX, -platformHeight, platformWidth, platformHeight, isSpecial));
 }
-
 function detectCollision(a, b) {
     const leg = 10;
 
