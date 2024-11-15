@@ -18,7 +18,7 @@ let doodler = {
 
 let velocityX = 0;
 let velocityY = 0;
-let initialVelocityY = -10;
+let initialVelocityY = -11;
 let gravity = 0.35;
 let maxHeight = boardHeight / 2;
 
